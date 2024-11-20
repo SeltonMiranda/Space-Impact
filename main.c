@@ -48,7 +48,7 @@ int main() {
   player_sprites[0] = al_load_bitmap("assets/player/player_base.png");
 
   Player *player = create_player();
-
+  
   while (1) {
     al_wait_for_event(queue, &event);
 
@@ -81,6 +81,7 @@ int main() {
     if (redraw && al_is_event_queue_empty(queue)) {
       render_background(background, buffer, bg_x);
       al_draw_bitmap(player_sprites[0], player->x, player->y, 0);
+      draw_shots(player->_gun);
       al_flip_display();
       redraw = false;
     }

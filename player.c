@@ -7,6 +7,8 @@
 #define PLAYER_WIDTH 128
 #define PLAYER_HEIGHT 128
 
+#define SHOT_COOLDOWN 15
+
 Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
   if (_player == NULL) return NULL;
@@ -34,6 +36,9 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
     case ALLEGRO_KEY_RIGHT:
       update_joystick_right(j);
       break;
+    case ALLEGRO_KEY_Z:
+      update_joystick_fire(j);
+      break;
   }
 }
 
@@ -59,10 +64,22 @@ void update_player(Player *player) {
     player->x += PLAYER_SPEED;
     if (player->x >= 1200 - PLAYER_WIDTH) player->x = 1200 - PLAYER_WIDTH;
   }
+
+  if (player->_joystick->fire) {
+    if (player->_gun->timer == 0) {
+      gun_shot(player->_gun, player->x + PLAYER_WIDTH, player->y + PLAYER_HEIGHT / 2 - 1);
+      player->_gun->timer = SHOT_COOLDOWN;
+    }
+
+    if (player->_gun->timer > 0) player->_gun->timer--;
+  }
+
+  
+  update_gun(player->_gun, 1);
 }
 
 void destroy_player(Player *player) {
-    destroy_gun(player->_gun);
-    destroy_joystick(player->_joystick);
-    free(player);
+  destroy_gun(player->_gun);
+  destroy_joystick(player->_joystick);
+  free(player);
 }
