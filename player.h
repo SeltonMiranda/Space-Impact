@@ -6,11 +6,18 @@
 #include "gun.h"
 #include "joystick.h"
 
+typedef enum PLAYER_STATE {
+  IDLE,
+  MOVEMENT
+} PLAYER_STATE;
+
 typedef struct Player {
   float x, y;           // Posicao do jogador
   Joystick *_joystick;  // Movimentacao do jogador
   Gun *_gun;            // Arma do jogador
   int health;           // Vida do jogador
+  int current_frame;    // Frame atual da sprite
+  PLAYER_STATE _state;
 } Player;
 
 Player *create_player();

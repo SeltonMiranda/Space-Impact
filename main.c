@@ -44,10 +44,11 @@ int main() {
   int width = al_get_bitmap_width(background);
   float bg_x = 0;
   /********************************************************/
-  ALLEGRO_BITMAP *player_sprites[1];
-  player_sprites[0] = al_load_bitmap("assets/player/player_base.png");
+  //ALLEGRO_BITMAP *player_sprites[1];
+  //player_sprites[0] = al_load_bitmap("assets/player/player_base.png");
 
   Player *player = create_player();
+  Resources_Manager *resources = create_resources();
   
   while (1) {
     al_wait_for_event(queue, &event);
@@ -80,7 +81,8 @@ int main() {
 
     if (redraw && al_is_event_queue_empty(queue)) {
       render_background(background, buffer, bg_x);
-      al_draw_bitmap(player_sprites[0], player->x, player->y, 0);
+      draw_player(player, resources);
+      //al_draw_bitmap(player_sprites[0], player->x, player->y, 0);
       draw_shots(player->_gun);
       al_flip_display();
       redraw = false;
@@ -93,7 +95,7 @@ int main() {
   al_destroy_font(font);
   al_destroy_bitmap(background);
   al_destroy_bitmap(buffer);
-  al_destroy_bitmap(player_sprites[0]);
+  //al_destroy_bitmap(player_sprites[0]);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(queue);
