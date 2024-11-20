@@ -10,6 +10,4 @@ void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
 
   al_set_target_backbuffer(al_get_current_display());
   al_draw_bitmap(buffer, 0, 0, 0);
-
-  al_flip_display();
 }

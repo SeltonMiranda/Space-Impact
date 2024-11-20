@@ -8,4 +8,7 @@ typedef struct Gun {
     Shot shots[100];
 } Gun;
 
+Gun *create_gun();
+
+void destroy_gun(Gun *gun);
 #endif // __GUN__

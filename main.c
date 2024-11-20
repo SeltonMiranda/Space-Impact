@@ -5,8 +5,9 @@
 #include <stdio.h>
 
 #include "graphics.h"
+#include "player.h"
 
-#define BACKGROUND_IMAGE "assets/background_#1.jpg"
+#define BACKGROUND_IMAGE "assets/background/background_#1.jpg"
 
 #define BACKGROUND_SPEED 2
 
@@ -35,41 +36,63 @@ int main() {
   bool redraw = true;
   bool done = false;
 
+  /********************************************************/
   ALLEGRO_BITMAP *background = NULL;
   ALLEGRO_BITMAP *buffer = al_create_bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
 
   background = al_load_bitmap(BACKGROUND_IMAGE);
   int width = al_get_bitmap_width(background);
   float bg_x = 0;
+  /********************************************************/
+  ALLEGRO_BITMAP *player_sprites[1];
+  player_sprites[0] = al_load_bitmap("assets/player/player_base.png");
+
+  Player *player = create_player();
 
   while (1) {
     al_wait_for_event(queue, &event);
+
     switch (event.type) {
       case ALLEGRO_EVENT_TIMER:
         bg_x -= BACKGROUND_SPEED;
         if (bg_x <= -width) {
           bg_x = 0;
         }
-        redraw = true;
+        update_player(player);
         break;
 
       case ALLEGRO_EVENT_KEY_DOWN:
+      case ALLEGRO_EVENT_KEY_UP:
+        if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
+          done = true;
+          break;
+        }
+        update_joystick(player->_joystick, &event);
+        break;
+
       case ALLEGRO_EVENT_DISPLAY_CLOSE:
         done = true;
         break;
     }
 
+    redraw = true;
     if (done) break;
 
     if (redraw && al_is_event_queue_empty(queue)) {
       render_background(background, buffer, bg_x);
+      al_draw_bitmap(player_sprites[0], player->x, player->y, 0);
+      al_flip_display();
       redraw = false;
     }
   }
 
+  destroy_player(player);
+
+  // ALLEGRO
   al_destroy_font(font);
   al_destroy_bitmap(background);
   al_destroy_bitmap(buffer);
+  al_destroy_bitmap(player_sprites[0]);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(queue);
