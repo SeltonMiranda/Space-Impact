@@ -46,7 +46,7 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
 
 void update_player(Player *player) {
   player->_state = IDLE;
-  
+
   if (player->_joystick->down) {
     player->_state = MOVEMENT;
     player->y += PLAYER_SPEED;
@@ -75,14 +75,15 @@ void update_player(Player *player) {
 
   if (player->_joystick->fire) {
     if (player->_gun->timer == 0) {
-      gun_shot(player->_gun, player->x + PLAYER_WIDTH, player->y + PLAYER_HEIGHT / 2 - 1);
+      gun_shot(player->_gun, player->x + PLAYER_WIDTH,
+               player->y + PLAYER_HEIGHT / 2 - 1);
       player->_gun->timer = SHOT_COOLDOWN;
     }
 
     if (player->_gun->timer > 0) player->_gun->timer--;
   }
 
-  
+  if (player->_state == MOVEMENT) player->current_frame++;
   update_gun(player->_gun, 1);
 }
 

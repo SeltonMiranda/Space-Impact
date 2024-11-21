@@ -14,10 +14,9 @@ void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
 
 void draw_player(Player *_player, Resources_Manager *_resources) {
   if (_player->_state == MOVEMENT) {
-    int frame = (_player->current_frame + 1) % 12;
+    int frame = (_player->current_frame / 8) % 12 + 1;
     al_draw_bitmap(_resources->player.sprites[frame], _player->x, _player->y,
                    0);
-    _player->current_frame++;
   }
 
   al_draw_bitmap(_resources->player.sprites[0], _player->x, _player->y, 0);
