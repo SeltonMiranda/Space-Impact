@@ -1,4 +1,4 @@
-#include "resourcesManager.h"
+#include "../../includes/backend/resourcesManager.h"
 
 #include <allegro5/allegro_image.h>
 #include <stdlib.h>

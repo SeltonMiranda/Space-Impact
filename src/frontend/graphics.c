@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "../../includes/frontend/graphics.h"
 
 void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
                        int bg_x) {

@@ -4,8 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 
-#include "player.h"
-#include "resourcesManager.h"
+#include "../backend/player.h"
+#include "../backend/resourcesManager.h"
 
 #define SCREEN_WIDTH 1200
 #define SCREEN_HEIGHT 600

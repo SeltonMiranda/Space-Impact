@@ -4,8 +4,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 
-#include "graphics.h"
-#include "player.h"
+#include "../../includes/frontend/graphics.h"
+#include "../../includes/backend/player.h"
 
 #define BACKGROUND_IMAGE "assets/background/background_#1.jpg"
 
