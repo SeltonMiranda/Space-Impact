@@ -44,19 +44,22 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
   }
 }
 
+#define PLAYER_PADDING 15
+
 void update_player(Player *player) {
   player->_state = IDLE;
 
   if (player->_joystick->down) {
     player->_state = MOVEMENT;
     player->y += PLAYER_SPEED;
-    if (player->y >= 600 - PLAYER_HEIGHT) player->y = 600 - PLAYER_HEIGHT;
+    if (player->y >= 500 - PLAYER_HEIGHT - PLAYER_PADDING)
+      player->y = 500 - PLAYER_HEIGHT - PLAYER_PADDING;
   }
 
   if (player->_joystick->up) {
     player->_state = MOVEMENT;
     player->y -= PLAYER_SPEED;
-    if (player->y <= 0) player->y = 0;
+    if (player->y <= -PLAYER_PADDING) player->y = -PLAYER_PADDING;
   }
 
   if (player->_joystick->left) {

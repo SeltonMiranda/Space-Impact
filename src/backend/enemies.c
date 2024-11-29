@@ -13,6 +13,8 @@
 #define DEAD 0
 #define ALIVE 1
 
+#define ENEMY_PADDING 50
+
 Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
   Enemy *enemy_vector = (Enemy *)malloc(sizeof(Enemy) * quantity);
   if (!enemy_vector) {
@@ -23,8 +25,8 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
   for (int i = 0; i < quantity; i++) {
     enemy_vector[i]._type = type;
     enemy_vector[i].isAlive = ALIVE;
-    enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * 50;
-    enemy_vector[i].y = (SCREEN_HEIGHT - ENEMY_HEIGHT) / 2;
+    enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * ENEMY_PADDING;
+    enemy_vector[i].y = (SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING;
     enemy_vector[i]._gun = create_gun(ENEMY);
     if (!enemy_vector[i]._gun) {
       printf("Couldn't load enemy_vector[%d]._gun\n", i);
@@ -103,7 +105,8 @@ void update_enemies(Enemy *enemies, int spawned) {
     if (enemies[i].isAlive) {
       enemies[i].x -= 2;
       if (enemies[i]._type == ENEMY_1) {
-        enemies[i].y = (SCREEN_HEIGHT / 2) + sin(enemies[i].x / 30) * 100;
+        enemies[i].y = ((SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING) +
+                       sin(enemies[i].x / 50) * 200;
       }
 
       if (enemies[i].x < 0) {
