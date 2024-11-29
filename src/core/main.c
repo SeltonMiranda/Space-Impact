@@ -4,8 +4,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 
-#include "../../includes/frontend/graphics.h"
+#include "../../includes/backend/enemies.h"
 #include "../../includes/backend/player.h"
+#include "../../includes/frontend/graphics.h"
 
 #define BACKGROUND_IMAGE "assets/background/background_#1.jpg"
 
@@ -47,6 +48,8 @@ int main() {
 
   Player *player = create_player();
   Resources_Manager *resources = create_resources();
+  SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 100);
+  SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 100);
 
   while (1) {
     al_wait_for_event(queue, &event);
@@ -57,6 +60,13 @@ int main() {
         if (bg_x <= -width) {
           bg_x = 0;
         }
+        update_spawn_control(_SpawnControlEnemy1);
+        update_spawn_control(_SpawnControlEnemy2);
+        update_enemies(_SpawnControlEnemy1->enemies,
+                       _SpawnControlEnemy1->spawned);
+        update_enemies(_SpawnControlEnemy2->enemies,
+                       _SpawnControlEnemy2->spawned);
+
         update_player(player);
         break;
 
@@ -79,6 +89,9 @@ int main() {
 
     if (redraw && al_is_event_queue_empty(queue)) {
       render_background(background, buffer, bg_x);
+      draw_enemies(_SpawnControlEnemy1->enemies, _SpawnControlEnemy1->spawned);
+      draw_enemies(_SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned);
+
       draw_player(player, resources);
       draw_shots(player->_gun);
       al_flip_display();
@@ -86,6 +99,8 @@ int main() {
     }
   }
 
+  destroy_spawn_control(_SpawnControlEnemy1);
+  destroy_spawn_control(_SpawnControlEnemy2);
   destroy_player(player);
   destroy_resources(resources);
   // ALLEGRO

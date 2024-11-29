@@ -3,7 +3,7 @@ MAIN = SpaceImpact
 
 # Flags de compilação
 ALLEGRO_LIBS = $(shell pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_primitives-5 allegro_image-5 --libs --cflags)
-CFLAGS = -Wall -Wextra -pedantic -g --std=c99
+CFLAGS = -Wall -Wextra -pedantic -g --std=c99 -lm
 
 # Diretórios
 SRC_DIR = src

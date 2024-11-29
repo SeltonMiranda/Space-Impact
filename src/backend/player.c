@@ -17,7 +17,7 @@ Player *create_player() {
   _player->x = 100;
   _player->y = 100;
   _player->_joystick = create_joystick();
-  _player->_gun = create_gun();
+  _player->_gun = create_gun(PLAYER);
   _player->current_frame = 0;
   _player->_state = IDLE;
 

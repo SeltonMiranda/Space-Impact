@@ -4,6 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 
+#include "../backend/enemies.h"
+#include "../backend/gun.h"
 #include "../backend/player.h"
 #include "../backend/resourcesManager.h"
 
@@ -18,5 +20,9 @@ void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
                        int bg_x);
 
 void draw_player(Player *_player, Resources_Manager *_resources);
+
+void draw_enemies(Enemy *enemies, int spawned);
+
+void draw_shots(Gun *_gun);
 
 #endif  // __GRAPHICS__
