@@ -64,7 +64,7 @@ SpawnControl *create_spawn_control(ENEMY_TYPE type, int quantity) {
   _SpawnControl->enemies = create_enemy(type, quantity);
   _SpawnControl->total = quantity;
   _SpawnControl->spawned = 0;
-  _SpawnControl->batch_size = 5;
+  _SpawnControl->batch_size = 7;
   _SpawnControl->last_spawn_time = time(NULL);
 
   switch (type) {
@@ -103,7 +103,7 @@ void update_spawn_control(SpawnControl *_SpawnControl) {
 void update_enemies(Enemy *enemies, int spawned) {
   for (int i = 0; i < spawned; i++) {
     if (enemies[i].isAlive) {
-      enemies[i].x -= 2;
+      enemies[i].x -= 1.0f;
       if (enemies[i]._type == ENEMY_1) {
         enemies[i].y = ((SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING) +
                        sin(enemies[i].x / 50) * 200;
