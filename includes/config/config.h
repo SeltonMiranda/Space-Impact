@@ -35,4 +35,9 @@
 #define MAX_SHOTS 256
 #define SHOT_SPEED 3
 
+// Boss
+#define BOSS_WIDTH 100
+#define BOSS_HEIGHT 100
+#define BOSS_SPEED 0.5f
+
 #endif  // __CONFIGURATION__
