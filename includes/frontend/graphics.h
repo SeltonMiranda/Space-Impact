@@ -4,6 +4,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 
+#include "../../includes/backend/boss.h"
 #include "../backend/enemies.h"
 #include "../backend/gun.h"
 #include "../backend/player.h"
@@ -26,5 +27,7 @@ void draw_enemies(Enemy *enemies, int spawned);
 void draw_enemies_shots(Enemy *enemies, int spawned);
 
 void draw_shots(Gun *_gun, int isPlayer);
+
+void draw_boss(Boss *boss);
 
 #endif  // __GRAPHICS__

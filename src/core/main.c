@@ -6,6 +6,7 @@
 
 #include "../../includes/backend/enemies.h"
 #include "../../includes/backend/player.h"
+#include "../../includes/backend/spawnControl.h"
 #include "../../includes/frontend/graphics.h"
 
 // Configs
@@ -42,6 +43,7 @@ int main() {
   /********************************************************/
 
   Player *player = create_player();
+  Boss *boss = create_boss();
   Resources_Manager *resources = create_resources();
   SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 200);
   SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 100);
@@ -62,7 +64,10 @@ int main() {
         update_enemies(_SpawnControlEnemy2->enemies,
                        _SpawnControlEnemy2->spawned);
 
+        update_boss(boss);
         update_player(player);
+
+        if (boss_should_spawn(boss)) spawn_boss(boss);
         break;
 
       case ALLEGRO_EVENT_KEY_DOWN:
@@ -87,17 +92,19 @@ int main() {
       draw_enemies(_SpawnControlEnemy1->enemies, _SpawnControlEnemy1->spawned);
       draw_enemies(_SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned);
 
-      draw_player(player, resources);
       draw_enemies_shots(_SpawnControlEnemy1->enemies,
                          _SpawnControlEnemy1->spawned);
       draw_enemies_shots(_SpawnControlEnemy2->enemies,
                          _SpawnControlEnemy2->spawned);
       draw_shots(player->_gun, ISPLAYER);
+      draw_boss(boss);
+      draw_player(player, resources);
       al_flip_display();
       redraw = false;
     }
   }
 
+  destroy_boss(boss);
   destroy_spawn_control(_SpawnControlEnemy1);
   destroy_spawn_control(_SpawnControlEnemy2);
   destroy_player(player);

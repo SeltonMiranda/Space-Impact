@@ -2,6 +2,7 @@
 
 #include <allegro5/allegro_primitives.h>
 
+#include "../../includes/backend/boss.h"
 #include "../../includes/config/config.h"
 
 void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
@@ -68,4 +69,10 @@ void draw_enemies_shots(Enemy *enemies, int spawned) {
   for (int i = 0; i < spawned; i++) {
     draw_shots(enemies[i]._gun, ISENEMY);
   }
+}
+
+void draw_boss(Boss *boss) {
+  if (boss->state == BOSS_STATE_NOT_SPAWNED) return;
+  al_draw_filled_rectangle(boss->x, boss->y, boss->x + BOSS_WIDTH,
+                           boss->y + BOSS_HEIGHT, al_map_rgb(255, 150, 250));
 }

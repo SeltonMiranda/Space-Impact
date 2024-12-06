@@ -1,4 +1,4 @@
-#include "../../../includes/utils/utils.h"
+#include "../../includes/utils/utils.h"
 
 int rand_between(int low, int high) {
   return low + (rand() % (high - low));
