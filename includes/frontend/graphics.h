@@ -23,6 +23,8 @@ void draw_player(Player *_player, Resources_Manager *_resources);
 
 void draw_enemies(Enemy *enemies, int spawned);
 
-void draw_shots(Gun *_gun);
+void draw_enemies_shots(Enemy *enemies, int spawned);
+
+void draw_shots(Gun *_gun, int isPlayer);
 
 #endif  // __GRAPHICS__

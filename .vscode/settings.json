@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "allegro_primitives.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "player.h": "c",
+        "graphics.h": "c",
+        "gun.h": "c",
+        "utils.h": "c",
+        "enemies.h": "c"
     }
 }

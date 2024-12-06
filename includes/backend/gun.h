@@ -1,9 +1,8 @@
 #ifndef __GUN__
 #define __GUN__
 
+#include "../../includes/config/config.h"
 #include "shot.h"
-
-#define MAX_SHOTS 256
 
 typedef enum {
   PLAYER,

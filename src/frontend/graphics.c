@@ -2,6 +2,8 @@
 
 #include <allegro5/allegro_primitives.h>
 
+#include "../../includes/config/config.h"
+
 void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
                        int bg_x) {
   al_set_target_bitmap(buffer);
@@ -49,11 +51,21 @@ void draw_enemies(Enemy *enemies, int spawned) {
   }
 }
 
-void draw_shots(Gun *_gun) {
-  for (int i = 0; i < 100; i++) {
+void draw_shots(Gun *_gun, int isPlayer) {
+  for (int i = 0; i < MAX_SHOTS; i++) {
     if (_gun->shots[i].is_fired == 1) {
-      al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
-                            al_map_rgb(0, 255, 0));
+      if (isPlayer)
+        al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
+                              al_map_rgb(0, 255, 0));
+      else
+        al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
+                              al_map_rgb(0, 255, 255));
     }
+  }
+}
+
+void draw_enemies_shots(Enemy *enemies, int spawned) {
+  for (int i = 0; i < spawned; i++) {
+    draw_shots(enemies[i]._gun, ISENEMY);
   }
 }

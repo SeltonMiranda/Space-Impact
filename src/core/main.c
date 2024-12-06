@@ -8,13 +8,8 @@
 #include "../../includes/backend/player.h"
 #include "../../includes/frontend/graphics.h"
 
-#define BACKGROUND_IMAGE "assets/background/background_#1.jpg"
-
-#define BACKGROUND_SPEED 1.5
-
-// Valores em pixels
-#define SCREEN_WIDTH 1200
-#define SCREEN_HEIGHT 600
+// Configs
+#include "../../includes/config/config.h"
 
 int main() {
   al_init();
@@ -93,7 +88,11 @@ int main() {
       draw_enemies(_SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned);
 
       draw_player(player, resources);
-      draw_shots(player->_gun);
+      draw_enemies_shots(_SpawnControlEnemy1->enemies,
+                         _SpawnControlEnemy1->spawned);
+      draw_enemies_shots(_SpawnControlEnemy2->enemies,
+                         _SpawnControlEnemy2->spawned);
+      draw_shots(player->_gun, ISPLAYER);
       al_flip_display();
       redraw = false;
     }

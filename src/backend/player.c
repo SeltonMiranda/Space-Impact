@@ -3,11 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PLAYER_SPEED 5.0
-#define PLAYER_WIDTH 128
-#define PLAYER_HEIGHT 128
-
-#define SHOT_COOLDOWN 10
+#include "../../includes/config/config.h"
 
 Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
@@ -43,8 +39,6 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
       break;
   }
 }
-
-#define PLAYER_PADDING 15
 
 void update_player(Player *player) {
   player->_state = IDLE;

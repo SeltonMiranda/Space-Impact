@@ -2,9 +2,11 @@
 
 #include <stdlib.h>
 
+#include "../../includes/utils/utils.h"
+
 Joystick* create_joystick() {
   Joystick* j = (Joystick*)malloc(sizeof(Joystick));
-  if (!j) return NULL;
+  must_init(j, "Joystick");
   j->up = 0;
   j->down = 0;
   j->right = 0;

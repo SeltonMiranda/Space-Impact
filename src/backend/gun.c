@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SHOT_SPEED 3
+#include "../../includes/utils/utils.h"
 
 Gun *create_gun(Gun_Source _source) {
   Gun *_gun = (Gun *)malloc(sizeof(Gun));
-  if (_gun == NULL) return NULL;
+  must_init(_gun, "Gun");
 
   for (int i = 0; i < MAX_SHOTS; i++) {
     _gun->shots[i].is_fired = 0;
@@ -20,7 +20,7 @@ Gun *create_gun(Gun_Source _source) {
 }
 
 void gun_shot(Gun *_gun, float x, float y) {
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < MAX_SHOTS; i++) {
     if (_gun->shots[i].is_fired == 0) {
       _gun->shots[i].is_fired = 1;
       _gun->shots[i].x = x;
@@ -31,7 +31,7 @@ void gun_shot(Gun *_gun, float x, float y) {
 }
 
 void update_gun(Gun *_gun, int isPlayer) {
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < MAX_SHOTS; i++) {
     if (_gun->shots[i].is_fired == 1) {
       if (isPlayer)
         _gun->shots[i].x += SHOT_SPEED;
