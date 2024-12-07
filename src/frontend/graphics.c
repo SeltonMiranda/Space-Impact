@@ -7,10 +7,21 @@
 #include "../../includes/backend/boss.h"
 #include "../../includes/config/config.h"
 
-void render_background(ALLEGRO_BITMAP *background, float bg_x) {
+// void render_background(ALLEGRO_BITMAP *background, float bg_x) {
+//   al_clear_to_color(al_map_rgb(0, 0, 0));
+//   al_draw_bitmap(background, bg_x, 0, 0);
+//   al_draw_bitmap(background, bg_x + SCREEN_WIDTH, 0, 0);
+// }
+
+void render_background(Resources_Manager *r, int state) {
   al_clear_to_color(al_map_rgb(0, 0, 0));
-  al_draw_bitmap(background, bg_x, 0, 0);
-  al_draw_bitmap(background, bg_x + SCREEN_WIDTH, 0, 0);
+  switch (state) {
+    case 1:
+      al_draw_bitmap(r->background.bg_one, r->background.x, 0, 0);
+      al_draw_bitmap(r->background.bg_one, r->background.x + SCREEN_WIDTH, 0,
+                     0);
+      break;
+  }
 }
 
 void render_menu() {
@@ -18,10 +29,10 @@ void render_menu() {
 
   // Exibir o texto no centro da tela
   ALLEGRO_FONT *font = al_create_builtin_font();
+  char *text = "Pressione Enter para começcar o jogo ou Q para sair";
   if (font) {
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
-                 SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
-                 "Pressione Enter para começar o jogo");
+                 SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE, text);
     al_destroy_font(font);
   }
 
@@ -33,9 +44,11 @@ void render_gameover() {
 
   // Exibir mensagem "Game Over"
   ALLEGRO_FONT *font = al_create_builtin_font();
+  char *text =
+      "GAME OVER\nPressione Enter para recomeçcar o jogo ou Q para sair";
   if (font) {
     al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2,
-                 SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, "GAME OVER");
+                 SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, text);
   }
 
   al_flip_display();  // Atualizar a tela

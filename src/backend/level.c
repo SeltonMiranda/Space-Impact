@@ -7,7 +7,6 @@ Level *loadLevel(LEVEL_PHASE phase) {
   Level *l = (Level *)malloc(sizeof(Level));
   must_init(l, "Level");
 
-  l->background_x = 0;
   l->phase = phase;
   switch (l->phase) {
     case LEVEL_PHASE_ONE:
@@ -23,13 +22,7 @@ Level *loadLevel(LEVEL_PHASE phase) {
   return l;
 }
 
-static void update_background(Level *l) {
-  l->background_x -= BACKGROUND_SPEED;
-  if (l->background_x <= -SCREEN_WIDTH) l->background_x = 0;
-}
-
 void update_level(Level *l) {
-  update_background(l);
   update_spawn_control(l->sp1);
   update_spawn_control(l->sp2);
   update_enemies(l->sp1->enemies, l->sp1->spawned);
@@ -39,6 +32,7 @@ void update_level(Level *l) {
 }
 
 void destroy_level(Level *l) {
+  if (!l) return;
   destroy_boss(l->boss);
   destroy_spawn_control(l->sp1);
   destroy_spawn_control(l->sp2);

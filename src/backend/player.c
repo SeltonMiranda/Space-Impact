@@ -45,6 +45,8 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
 }
 
 void update_player(Player *player) {
+  update_gun(player->_gun, 1);
+
   if (player->health <= 0) return;
 
   if (player->respawn_timer) {
@@ -52,7 +54,6 @@ void update_player(Player *player) {
     return;
   }
 
-  update_gun(player->_gun, 1);
   player->_state = IDLE;
   if (player->_joystick->down) {
     player->_state = MOVEMENT;
@@ -95,6 +96,7 @@ void update_player(Player *player) {
 }
 
 void destroy_player(Player *player) {
+  if (!player) return;
   destroy_special_attack(player->special_attack);
   destroy_gun(player->_gun);
   destroy_joystick(player->_joystick);

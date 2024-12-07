@@ -30,9 +30,11 @@ void init_game(Game *game) {
   al_start_timer(game->game_timer);
   game->background = al_load_bitmap(BACKGROUND_IMAGE);
   game->is_running = 1;
+  game->level = NULL;
   game->state = GAME_STATE_MENU;
   game->player = create_player();
   game->rm = create_resources();
+  load_all_sprites(game->rm);
   load_player_sprites(game->rm);
 }
 
@@ -48,7 +50,8 @@ void deinit_game(Game *game) {
 
 static void render_game(Game *game) {
   if (al_is_event_queue_empty(game->queue)) {
-    render_background(game->background, game->level->background_x);
+    render_background(game->rm, game->state);
+
     draw_enemies(game->level->sp1->enemies, game->level->sp1->spawned);
     draw_enemies(game->level->sp2->enemies, game->level->sp2->spawned);
 
@@ -64,10 +67,25 @@ static void render_game(Game *game) {
   }
 }
 
+static void reset_level_one(Game *game) {
+  game->state = GAME_STATE_LEVEL_ONE;
+  destroy_level(game->level);
+  destroy_player(game->player);
+  game->level = loadLevel(LEVEL_PHASE_ONE);
+  game->player = create_player();
+  game->rm->background.x = 0;
+}
+
+static void update_background(Game *game) {
+  game->rm->background.x -= BACKGROUND_SPEED;
+  if (game->rm->background.x <= -SCREEN_WIDTH) game->rm->background.x = 0;
+}
+
 void game_loop(Game *game) {
   ALLEGRO_EVENT event;
   while (game->is_running) {
     al_wait_for_event(game->queue, &event);
+
     switch (event.type) {
       case ALLEGRO_EVENT_TIMER:
         if (game->state == GAME_STATE_GAME_OVER) {
@@ -75,21 +93,26 @@ void game_loop(Game *game) {
         } else if (game->state == GAME_STATE_MENU) {
           render_menu();
         } else if (game->state == GAME_STATE_LEVEL_ONE) {
+          update_background(game);
           update_level(game->level);
           spawn_special_attack(game->player->special_attack);
           update_player(game->player);
 
           check_all_collisions(game->player, game->level);
 
-          if (game->player->health <= 0) {
-            game->state = GAME_STATE_GAME_OVER;
-          }
+          if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
+
           render_game(game);
         }
         break;
 
       case ALLEGRO_EVENT_KEY_DOWN:
       case ALLEGRO_EVENT_KEY_UP:
+        if (game->state == GAME_STATE_GAME_OVER) {
+          if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+            reset_level_one(game);
+          }
+        }
         if (game->state == GAME_STATE_MENU) {
           if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
             game->state = GAME_STATE_LEVEL_ONE;

@@ -14,11 +14,8 @@
 #define SCREEN_WIDTH 1200
 #define SCREEN_HEIGHT 600
 
-typedef struct Background {
-  ALLEGRO_BITMAP *_background;
-} Background;
-
-void render_background(ALLEGRO_BITMAP *background, float bg_x);
+// void render_background(ALLEGRO_BITMAP *background, float bg_x);
+void render_background(Resources_Manager *r, int state);
 
 void render_menu();
 

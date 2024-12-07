@@ -26,7 +26,18 @@ void load_player_sprites(Resources_Manager *rm) {
   }
 }
 
+void load_background(Resources_Manager *r) {
+  r->background.bg_one = al_load_bitmap(BACKGROUND_IMAGE);
+  r->background.x = 0;
+}
+
+void load_all_sprites(Resources_Manager *r) {
+  load_background(r);
+  load_player_sprites(r);
+}
+
 void destroy_resources(Resources_Manager *_resources) {
+  if (!_resources) return;
   al_destroy_bitmap(_resources->player.sprites[0]);
   al_destroy_bitmap(_resources->player.engine);
   free(_resources);
