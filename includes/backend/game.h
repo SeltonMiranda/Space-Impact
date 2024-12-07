@@ -44,4 +44,8 @@ void game_loop(Game *game);
 
 void game_run(Game *game);
 
+void handleKeyPress(Game *game, ALLEGRO_EVENT *ev);
+
+void update_game_state(Game *game);
+
 #endif  // __GAME__

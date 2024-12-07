@@ -4,6 +4,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <stdio.h>
 
 #include "../../includes/backend/collision/collision.h"
 #include "../../includes/config/config.h"
@@ -81,6 +82,67 @@ static void update_background(Game *game) {
   if (game->rm->background.x <= -SCREEN_WIDTH) game->rm->background.x = 0;
 }
 
+void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
+  if (ev->keyboard.keycode == ALLEGRO_KEY_Q) {
+    game->is_running = 0;
+    return;
+  }
+
+  switch (game->state) {
+    case GAME_STATE_MENU:
+      if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) {
+        game->state = GAME_STATE_LEVEL_ONE;
+        game->level = loadLevel(LEVEL_PHASE_ONE);
+      }
+      break;
+
+    case GAME_STATE_LEVEL_ONE:
+      update_joystick(game->player->_joystick, ev);
+      break;
+
+    case GAME_STATE_VICTORY:
+    case GAME_STATE_LEVEL_TWO:
+      printf("not implemented yet\n");
+      exit(1);
+      break;
+
+    case GAME_STATE_GAME_OVER:
+      if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) reset_level_one(game);
+      break;
+  }
+}
+
+void update_game_state(Game *game) {
+  switch (game->state) {
+    case GAME_STATE_GAME_OVER:
+      render_gameover();
+      break;
+
+    case GAME_STATE_MENU:
+      render_menu();
+      break;
+
+    case GAME_STATE_LEVEL_ONE:
+      update_background(game);
+      update_level(game->level);
+      spawn_special_attack(game->player->special_attack);
+      update_player(game->player);
+
+      check_all_collisions(game->player, game->level);
+
+      if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
+
+      render_game(game);
+      break;
+
+    case GAME_STATE_LEVEL_TWO:
+    case GAME_STATE_VICTORY:
+      printf("Not implemented yet\n");
+      exit(1);
+      break;
+  }
+}
+
 void game_loop(Game *game) {
   ALLEGRO_EVENT event;
   while (game->is_running) {
@@ -88,44 +150,12 @@ void game_loop(Game *game) {
 
     switch (event.type) {
       case ALLEGRO_EVENT_TIMER:
-        if (game->state == GAME_STATE_GAME_OVER) {
-          render_gameover();
-        } else if (game->state == GAME_STATE_MENU) {
-          render_menu();
-        } else if (game->state == GAME_STATE_LEVEL_ONE) {
-          update_background(game);
-          update_level(game->level);
-          spawn_special_attack(game->player->special_attack);
-          update_player(game->player);
-
-          check_all_collisions(game->player, game->level);
-
-          if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
-
-          render_game(game);
-        }
+        update_game_state(game);
         break;
 
       case ALLEGRO_EVENT_KEY_DOWN:
       case ALLEGRO_EVENT_KEY_UP:
-        if (game->state == GAME_STATE_GAME_OVER) {
-          if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-            reset_level_one(game);
-          }
-        }
-        if (game->state == GAME_STATE_MENU) {
-          if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-            game->state = GAME_STATE_LEVEL_ONE;
-            game->level = loadLevel(LEVEL_PHASE_ONE);
-          }
-        }
-        if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
-          game->is_running = 0;
-          break;
-        }
-        if (game->state == GAME_STATE_LEVEL_ONE) {
-          update_joystick(game->player->_joystick, &event);
-        }
+        handleKeyPress(game, &event);
         break;
 
       case ALLEGRO_EVENT_DISPLAY_CLOSE:
