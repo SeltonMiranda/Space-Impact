@@ -6,6 +6,7 @@
 
 #include "../../includes/backend/collision/collision.h"
 #include "../../includes/backend/enemies.h"
+#include "../../includes/backend/level.h"
 #include "../../includes/backend/player.h"
 #include "../../includes/backend/spawnControl.h"
 #include "../../includes/frontend/graphics.h"
@@ -39,41 +40,24 @@ int main() {
   ALLEGRO_BITMAP *buffer = al_create_bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
 
   background = al_load_bitmap(BACKGROUND_IMAGE);
-  int width = al_get_bitmap_width(background);
-  float bg_x = 0;
+
   /********************************************************/
 
   Player *player = create_player();
-  Boss *boss = create_boss(LEVEL_ONE_BOSS);
+  Level *l = loadLevel(LEVEL_PHASE_ONE);
   Resources_Manager *resources = create_resources();
-  SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 0);
-  SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 0);
 
   while (1) {
     al_wait_for_event(queue, &event);
 
     switch (event.type) {
       case ALLEGRO_EVENT_TIMER:
-        bg_x -= BACKGROUND_SPEED;
-        if (bg_x <= -width) {
-          bg_x = 0;
-        }
-        update_spawn_control(_SpawnControlEnemy1);
-        update_spawn_control(_SpawnControlEnemy2);
-        update_enemies(_SpawnControlEnemy1->enemies,
-                       _SpawnControlEnemy1->spawned);
-        update_enemies(_SpawnControlEnemy2->enemies,
-                       _SpawnControlEnemy2->spawned);
-
-        update_boss(boss);
-        update_special_attack(player->special_attack);
+        update_level(l);
         spawn_special_attack(player->special_attack);
         update_player(player);
 
-        if (boss_should_spawn(boss)) spawn_boss(boss);
-        check_all_collisions(
-            player, _SpawnControlEnemy1->enemies, _SpawnControlEnemy1->spawned,
-            _SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned, boss);
+        check_all_collisions(player, l);
+
         if (player->health == 0) {
           done = true;
         }
@@ -97,16 +81,16 @@ int main() {
     if (done) break;
 
     if (redraw && al_is_event_queue_empty(queue)) {
-      render_background(background, buffer, bg_x);
-      draw_enemies(_SpawnControlEnemy1->enemies, _SpawnControlEnemy1->spawned);
-      draw_enemies(_SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned);
+      render_background(background, buffer, l->background_x);
+      draw_enemies(l->sp1->enemies, l->sp1->spawned);
+      draw_enemies(l->sp2->enemies, l->sp2->spawned);
 
-      draw_enemies_shots(_SpawnControlEnemy1->enemies,
-                         _SpawnControlEnemy1->spawned);
-      draw_enemies_shots(_SpawnControlEnemy2->enemies,
-                         _SpawnControlEnemy2->spawned);
+      draw_enemies_shots(l->sp1->enemies, l->sp1->spawned);
+      draw_enemies_shots(l->sp2->enemies, l->sp2->spawned);
+
       draw_shots(player->_gun, ISPLAYER);
-      draw_boss(boss);
+      draw_boss(l->boss);
+
       draw_special(player->special_attack);
       draw_player(player, resources);
       al_flip_display();
@@ -114,9 +98,7 @@ int main() {
     }
   }
 
-  destroy_boss(boss);
-  destroy_spawn_control(_SpawnControlEnemy1);
-  destroy_spawn_control(_SpawnControlEnemy2);
+  destroy_level(l);
   destroy_player(player);
   destroy_resources(resources);
   // ALLEGRO

@@ -3,10 +3,10 @@
 
 #include "../boss.h"
 #include "../enemies.h"
+#include "../level.h"
 #include "../player.h"
 
-void check_all_collisions(Player *player, Enemy *enemies1, int spawned_enemies1,
-                          Enemy *enemies2, int spawned_enemies2, Boss *boss);
+void check_all_collisions(Player *player, Level *l);
 
 void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
                         Enemy *enemies2, int spawned2);

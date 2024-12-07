@@ -143,18 +143,17 @@ void check_boss_collision(Player *player, Boss *boss) {
   }
 }
 
-void check_all_collisions(Player *player, Enemy *enemies1, int spawned_enemies1,
-                          Enemy *enemies2, int spawned_enemies2, Boss *boss) {
+void check_all_collisions(Player *player, Level *l) {
   check_special_item_collision(player);
-  check_player_enemy_collision(player, enemies1, spawned_enemies1, enemies2,
-                               spawned_enemies2);
+  check_player_enemy_collision(player, l->sp1->enemies, l->sp1->spawned,
+                               l->sp2->enemies, l->sp2->spawned);
 
   // disparos dos inimigos no jogador
-  check_enemy_shots(enemies1, spawned_enemies1, enemies2, spawned_enemies2,
-                    player);
+  check_enemy_shots(l->sp1->enemies, l->sp1->spawned, l->sp2->enemies,
+                    l->sp2->spawned, player);
   // disparos do jogador no inimigo
-  check_player_shots(player->_gun, enemies1, spawned_enemies1, enemies2,
-                     spawned_enemies2);
+  check_player_shots(player->_gun, l->sp1->enemies, l->sp1->spawned,
+                     l->sp2->enemies, l->sp2->spawned);
 
-  check_boss_collision(player, boss);
+  check_boss_collision(player, l->boss);
 }
