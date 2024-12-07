@@ -1,7 +1,7 @@
 #ifndef __CONFIGURATION__
 #define __CONFIGURATION__
 
-// General
+// ------------- GENERAL ----------------
 #define BACKGROUND_IMAGE "assets/background/background_#1.jpg"
 #define BACKGROUND_SPEED 0.75
 #define SCREEN_WIDTH 1200
@@ -24,24 +24,27 @@
 #define MAX_TIME 600
 // ------------- Enemies ----------------
 
-// Player
+// ------------- PLAYER ----------------
 #define PLAYER_SPEED 5.0
 #define PLAYER_WIDTH 128
 #define PLAYER_HEIGHT 128
 #define PLAYER_PADDING 15
+#define SPATTACK_TIME 5
+// ------------- PLAYER ----------------
 
-// Shot
+// ------------- SHOT ----------------
 #define SHOT_COOLDOWN 10
 #define MAX_SHOTS 256
 #define SHOT_SPEED 3
+// ------------- SHOT ----------------
 
-// Boss
+// ------------- BOSS ----------------
 #define BOSS_WIDTH 100
 #define BOSS_HEIGHT 100
 #define BOSS_SPEED 2.5f
 #define BOSS_TIME_SPAWN 10
-
 #define DOWN 1
 #define UP -1
+// ------------- BOSS ----------------
 
 #endif  // __CONFIGURATION__

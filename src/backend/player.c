@@ -4,18 +4,20 @@
 #include <stdlib.h>
 
 #include "../../includes/config/config.h"
+#include "../../includes/utils/utils.h"
 
 Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
-  if (_player == NULL) return NULL;
+  must_init(_player, "Player");
 
   _player->health = 3;
   _player->x = 100;
   _player->y = 100;
-  _player->_joystick = create_joystick();
-  _player->_gun = create_gun(PLAYER);
   _player->current_frame = 0;
   _player->_state = IDLE;
+  _player->_joystick = create_joystick();
+  _player->_gun = create_gun(PLAYER);
+  _player->special_attack = init_special();
 
   return _player;
 }

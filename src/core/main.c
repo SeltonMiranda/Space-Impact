@@ -43,7 +43,7 @@ int main() {
   /********************************************************/
 
   Player *player = create_player();
-  Boss *boss = create_boss();
+  Boss *boss = create_boss(LEVEL_ONE_BOSS);
   Resources_Manager *resources = create_resources();
   SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 200);
   SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 100);

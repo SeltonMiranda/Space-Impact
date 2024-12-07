@@ -3,18 +3,21 @@
 
 #include <allegro5/allegro5.h>
 
-#include "gun.h"
 #include "joystick.h"
+#include "special.h"
 
 typedef enum PLAYER_STATE { IDLE, MOVEMENT } PLAYER_STATE;
 
 typedef struct Player {
   float x, y;
-  Joystick *_joystick;
-  Gun *_gun;
   int health;
   int current_frame;
+
+  Joystick *_joystick;
+  Gun *_gun;
+  Special *special_attack;
   PLAYER_STATE _state;
+
 } Player;
 
 Player *create_player();
