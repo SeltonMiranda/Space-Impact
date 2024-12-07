@@ -58,7 +58,7 @@ int main() {
 
         check_all_collisions(player, l);
 
-        if (player->health == 0) {
+        if (player->health <= 0) {
           done = true;
         }
         break;

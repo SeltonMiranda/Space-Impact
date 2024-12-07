@@ -12,6 +12,8 @@ typedef struct Player {
   float x, y;
   int health;
   int current_frame;
+  int invincible_timer;
+  int respawn_timer;
 
   Joystick *_joystick;
   Gun *_gun;

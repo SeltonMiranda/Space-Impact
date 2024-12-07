@@ -10,7 +10,9 @@ Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
   must_init(_player, "Player");
 
-  _player->health = 5;
+  _player->health = 3;
+  _player->invincible_timer = 120;
+  _player->respawn_timer = 0;
   _player->x = 100;
   _player->y = 100;
   _player->current_frame = 0;
@@ -43,11 +45,15 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
 }
 
 void update_player(Player *player) {
+  if (player->health <= 0) return;
+
+  if (player->respawn_timer) {
+    player->respawn_timer--;
+    return;
+  }
+
   update_gun(player->_gun, 1);
-
-  if (player->health == 0) return;
   player->_state = IDLE;
-
   if (player->_joystick->down) {
     player->_state = MOVEMENT;
     player->y += PLAYER_SPEED;

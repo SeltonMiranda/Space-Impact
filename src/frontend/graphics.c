@@ -18,6 +18,12 @@ void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {
+  // if (_player->health <= 0) return;
+
+  if (_player->respawn_timer) return;
+
+  if (((_player->invincible_timer / 2) % 3) == 1) return;
+
   if (_player->_state == MOVEMENT) {
     int frame = (_player->current_frame / 15) % 12 + 1;
     al_draw_bitmap(_resources->player.sprites[frame], _player->x, _player->y,
