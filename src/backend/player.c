@@ -13,8 +13,8 @@ Player *create_player() {
   _player->health = 3;
   _player->invincible_timer = 120;
   _player->respawn_timer = 0;
-  _player->x = 100;
-  _player->y = 100;
+  _player->x = PLAYER_PADDING;
+  _player->y = (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2;
   _player->current_frame = 0;
   _player->_state = IDLE;
   _player->_joystick = create_joystick();
@@ -84,8 +84,8 @@ void update_player(Player *player) {
 
   if (player->_joystick->fire) {
     if (player->_gun->timer == 0) {
-      gun_shot(player->_gun, player->x + PLAYER_WIDTH,
-               player->y + PLAYER_HEIGHT / 2 - 1);
+      gun_shot(player->_gun, player->x + PLAYER_WIDTH - SHOT_WIDTH / 2,
+               player->y + PLAYER_HEIGHT / 2 - SHOT_HEIGHT / 2);
       player->_gun->timer = SHOT_COOLDOWN;
     }
 

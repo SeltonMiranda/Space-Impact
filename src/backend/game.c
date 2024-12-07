@@ -29,7 +29,6 @@ void init_game(Game *game) {
                            al_get_timer_event_source(game->game_timer));
 
   al_start_timer(game->game_timer);
-  game->background = al_load_bitmap(BACKGROUND_IMAGE);
   game->is_running = 1;
   game->level = NULL;
   game->state = GAME_STATE_MENU;
@@ -53,13 +52,17 @@ static void render_game(Game *game) {
   if (al_is_event_queue_empty(game->queue)) {
     render_background(game->rm, game->state);
 
-    draw_enemies(game->level->sp1->enemies, game->level->sp1->spawned);
-    draw_enemies(game->level->sp2->enemies, game->level->sp2->spawned);
+    draw_enemies(game->level->sp1->enemies, game->level->sp1->spawned,
+                 game->rm);
+    draw_enemies(game->level->sp2->enemies, game->level->sp2->spawned,
+                 game->rm);
 
-    draw_enemies_shots(game->level->sp1->enemies, game->level->sp1->spawned);
-    draw_enemies_shots(game->level->sp2->enemies, game->level->sp2->spawned);
+    draw_enemies_shots(game->level->sp1->enemies, game->level->sp1->spawned,
+                       game->rm);
+    draw_enemies_shots(game->level->sp2->enemies, game->level->sp2->spawned,
+                       game->rm);
 
-    draw_shots(game->player->_gun, ISPLAYER);
+    draw_shots(game->player->_gun, ISPLAYER, game->rm);
     draw_boss(game->level->boss);
 
     draw_special(game->player->special_attack);
@@ -115,11 +118,11 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
 void update_game_state(Game *game) {
   switch (game->state) {
     case GAME_STATE_GAME_OVER:
-      render_gameover();
+      render_gameover(game->rm, game->state);
       break;
 
     case GAME_STATE_MENU:
-      render_menu();
+      render_menu(game->rm, game->state);
       break;
 
     case GAME_STATE_LEVEL_ONE:

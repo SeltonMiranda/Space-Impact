@@ -11,7 +11,6 @@ typedef struct Level {
   SpawnControl *sp2;
   LEVEL_PHASE phase;
   Boss *boss;
-  float background_x;
 } Level;
 
 Level *loadLevel(LEVEL_PHASE phase);

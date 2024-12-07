@@ -30,9 +30,9 @@ void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
     if (gun->shots[i].is_fired) {
       for (int j = 0; j < spawned1; j++) {
         if (enemies1[j].isAlive &&
-            collide(gun->shots[i].x, gun->shots[i].y, gun->shots[i].x + 40,
-                    gun->shots[i].y + 40, enemies1[j].x, enemies1[j].y,
-                    enemies1[j].x + ENEMY_WIDTH,
+            collide(gun->shots[i].x, gun->shots[i].y,
+                    gun->shots[i].x + SHOT_WIDTH, gun->shots[i].y + SHOT_HEIGHT,
+                    enemies1[j].x, enemies1[j].y, enemies1[j].x + ENEMY_WIDTH,
                     enemies1[j].y + ENEMY_HEIGHT)) {
           handleShotToEnemyCollision(&gun->shots[i], &enemies1[j]);
         }
@@ -44,9 +44,9 @@ void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
     if (gun->shots[i].is_fired) {
       for (int j = 0; j < spawned2; j++) {
         if (enemies2[j].isAlive &&
-            collide(gun->shots[i].x, gun->shots[i].y, gun->shots[i].x + 40,
-                    gun->shots[i].y + 40, enemies2[j].x, enemies2[j].y,
-                    enemies2[j].x + ENEMY_WIDTH,
+            collide(gun->shots[i].x, gun->shots[i].y,
+                    gun->shots[i].x + SHOT_WIDTH, gun->shots[i].y + SHOT_HEIGHT,
+                    enemies2[j].x, enemies2[j].y, enemies2[j].x + ENEMY_WIDTH,
                     enemies2[j].y + ENEMY_HEIGHT)) {
           handleShotToEnemyCollision(&gun->shots[i], &enemies2[j]);
         }
@@ -80,8 +80,8 @@ void check_enemy_shots(Enemy *enemies1, int spawned1, Enemy *enemies2,
           collide(player->x, player->y, player->x + PLAYER_WIDTH,
                   player->y + PLAYER_HEIGHT, enemies1[i]._gun->shots[j].x,
                   enemies1[i]._gun->shots[j].y,
-                  enemies1[i]._gun->shots[j].x + 40,
-                  enemies1[i]._gun->shots[j].y + 40)) {
+                  enemies1[i]._gun->shots[j].x + ENEMY_SHOT_WIDTH / 3,
+                  enemies1[i]._gun->shots[j].y + ENEMY_SHOT_HEIGHT / 3)) {
         handleShotToPlayerCollision(&enemies1[i]._gun->shots[j], player);
       }
     }
@@ -93,8 +93,8 @@ void check_enemy_shots(Enemy *enemies1, int spawned1, Enemy *enemies2,
           collide(player->x, player->y, player->x + PLAYER_WIDTH,
                   player->y + PLAYER_HEIGHT, enemies2[i]._gun->shots[j].x,
                   enemies2[i]._gun->shots[j].y,
-                  enemies2[i]._gun->shots[j].x + 40,
-                  enemies2[i]._gun->shots[j].y + 40)) {
+                  enemies2[i]._gun->shots[j].x + ENEMY_SHOT_WIDTH / 3,
+                  enemies2[i]._gun->shots[j].y + ENEMY_SHOT_HEIGHT / 3)) {
         handleShotToPlayerCollision(&enemies2[i]._gun->shots[j], player);
       }
     }

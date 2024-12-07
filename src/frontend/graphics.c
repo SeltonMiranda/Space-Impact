@@ -7,27 +7,32 @@
 #include "../../includes/backend/boss.h"
 #include "../../includes/config/config.h"
 
-// void render_background(ALLEGRO_BITMAP *background, float bg_x) {
-//   al_clear_to_color(al_map_rgb(0, 0, 0));
-//   al_draw_bitmap(background, bg_x, 0, 0);
-//   al_draw_bitmap(background, bg_x + SCREEN_WIDTH, 0, 0);
-// }
-
 void render_background(Resources_Manager *r, int state) {
   al_clear_to_color(al_map_rgb(0, 0, 0));
   switch (state) {
+    case 0:
+    case 3:
+    case 4:
+      al_draw_bitmap(r->background.bg_common, 0, 0, 0);
+      break;
+
     case 1:
       al_draw_bitmap(r->background.bg_one, r->background.x, 0, 0);
       al_draw_bitmap(r->background.bg_one, r->background.x + SCREEN_WIDTH, 0,
                      0);
       break;
+
+    case 2:
+      al_draw_bitmap(r->background.bg_two, r->background.x, 0, 0);
+      al_draw_bitmap(r->background.bg_two, r->background.x + SCREEN_WIDTH, 0,
+                     0);
+      break;
   }
 }
 
-void render_menu() {
-  al_clear_to_color(al_map_rgb(0, 0, 0));  // Fundo preto
+void render_menu(Resources_Manager *r, int state) {
+  render_background(r, state);
 
-  // Exibir o texto no centro da tela
   ALLEGRO_FONT *font = al_create_builtin_font();
   char *text = "Pressione Enter para começcar o jogo ou Q para sair";
   if (font) {
@@ -36,13 +41,11 @@ void render_menu() {
     al_destroy_font(font);
   }
 
-  al_flip_display();  // Atualiza a tela
+  al_flip_display();
 }
 
-void render_gameover() {
-  al_clear_to_color(al_map_rgb(0, 0, 0));  // Tela preta
-
-  // Exibir mensagem "Game Over"
+void render_gameover(Resources_Manager *r, int state) {
+  render_background(r, state);
   ALLEGRO_FONT *font = al_create_builtin_font();
   char *text =
       "GAME OVER\nPressione Enter para recomeçcar o jogo ou Q para sair";
@@ -51,12 +54,10 @@ void render_gameover() {
                  SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, text);
   }
 
-  al_flip_display();  // Atualizar a tela
+  al_flip_display();
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {
-  // if (_player->health <= 0) return;
-
   if (_player->respawn_timer) return;
 
   if (((_player->invincible_timer / 2) % 3) == 1) return;
@@ -70,48 +71,49 @@ void draw_player(Player *_player, Resources_Manager *_resources) {
   al_draw_bitmap(_resources->player.sprites[0], _player->x, _player->y, 0);
 }
 
-void draw_enemies(Enemy *enemies, int spawned) {
-  ALLEGRO_COLOR color;
+void draw_enemies(Enemy *enemies, int spawned, Resources_Manager *r) {
+  ALLEGRO_BITMAP *sprite;
   switch (enemies[0]._type) {
     case ENEMY_1:
-      color = al_map_rgb(255, 0, 0);
+      sprite = r->enemy.enemy_one;
       break;
     case ENEMY_2:
-      color = al_map_rgb(0, 0, 255);
+      sprite = r->enemy.enemy_two;
       break;
     case ENEMY_3:
-      color = al_map_rgb(255, 0, 0);
+      sprite = r->enemy.enemy_three;
       break;
     case ENEMY_4:
-      color = al_map_rgb(0, 0, 255);
+      sprite = r->enemy.enemy_four;
       break;
   }
 
   for (int i = 0; i < spawned; i++) {
-    if (enemies[i].isAlive) {
-      al_draw_filled_rectangle(enemies[i].x, enemies[i].y,
-                               enemies[i].x + ENEMY_WIDTH,
-                               enemies[i].y + ENEMY_HEIGHT, color);
-    }
+    if (enemies[i].isAlive)
+      al_draw_bitmap(sprite, enemies[i].x, enemies[i].y, 0);
   }
 }
 
-void draw_shots(Gun *_gun, int isPlayer) {
+void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r) {
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (_gun->shots[i].is_fired == 1) {
+      int frame = (_gun->shots[i].current_frame / 15) % 3;
+      float x = _gun->shots[i].x;
+      float y = _gun->shots[i].y;
       if (isPlayer)
-        al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
-                              al_map_rgb(0, 255, 0));
-      else
-        al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
-                              al_map_rgb(0, 255, 255));
+        al_draw_bitmap(r->shots.normal_shot[frame], x, y, 0);
+      else {
+        al_draw_bitmap(r->shots.enemy_shot[frame], x, y, 0);
+      }
+      // al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
+      //                       al_map_rgb(0, 255, 255));
     }
   }
 }
 
-void draw_enemies_shots(Enemy *enemies, int spawned) {
+void draw_enemies_shots(Enemy *enemies, int spawned, Resources_Manager *r) {
   for (int i = 0; i < spawned; i++) {
-    draw_shots(enemies[i]._gun, ISENEMY);
+    draw_shots(enemies[i]._gun, ISENEMY, r);
   }
 }
 

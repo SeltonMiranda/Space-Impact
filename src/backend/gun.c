@@ -13,6 +13,7 @@ Gun *create_gun(Gun_Source _source) {
 
   for (int i = 0; i < MAX_SHOTS; i++) {
     _gun->shots[i].is_fired = 0;
+    _gun->shots[i].current_frame = 0;
   }
   _gun->_source = _source;
   _gun->timer = 0;
@@ -40,7 +41,9 @@ void update_gun(Gun *_gun, int isPlayer) {
 
       if (_gun->shots[i].x < 0 || _gun->shots[i].x > 1200) {
         _gun->shots[i].is_fired = 0;
+        _gun->shots[i].current_frame = 0;
       }
+      _gun->shots[i].current_frame++;
     }
   }
 }
