@@ -4,6 +4,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 
+#include "../../includes/backend/collision/collision.h"
 #include "../../includes/backend/enemies.h"
 #include "../../includes/backend/player.h"
 #include "../../includes/backend/spawnControl.h"
@@ -45,8 +46,8 @@ int main() {
   Player *player = create_player();
   Boss *boss = create_boss(LEVEL_ONE_BOSS);
   Resources_Manager *resources = create_resources();
-  SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 200);
-  SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 100);
+  SpawnControl *_SpawnControlEnemy1 = create_spawn_control(ENEMY_1, 0);
+  SpawnControl *_SpawnControlEnemy2 = create_spawn_control(ENEMY_2, 0);
 
   while (1) {
     al_wait_for_event(queue, &event);
@@ -65,9 +66,17 @@ int main() {
                        _SpawnControlEnemy2->spawned);
 
         update_boss(boss);
+        update_special_attack(player->special_attack);
+        spawn_special_attack(player->special_attack);
         update_player(player);
 
         if (boss_should_spawn(boss)) spawn_boss(boss);
+        check_all_collisions(
+            player, _SpawnControlEnemy1->enemies, _SpawnControlEnemy1->spawned,
+            _SpawnControlEnemy2->enemies, _SpawnControlEnemy2->spawned, boss);
+        if (player->health == 0) {
+          done = true;
+        }
         break;
 
       case ALLEGRO_EVENT_KEY_DOWN:
@@ -98,6 +107,7 @@ int main() {
                          _SpawnControlEnemy2->spawned);
       draw_shots(player->_gun, ISPLAYER);
       draw_boss(boss);
+      draw_special(player->special_attack);
       draw_player(player, resources);
       al_flip_display();
       redraw = false;

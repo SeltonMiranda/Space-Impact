@@ -10,7 +10,7 @@ Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
   must_init(_player, "Player");
 
-  _player->health = 3;
+  _player->health = 5;
   _player->x = 100;
   _player->y = 100;
   _player->current_frame = 0;
@@ -43,6 +43,9 @@ void update_joystick(Joystick *j, ALLEGRO_EVENT *event) {
 }
 
 void update_player(Player *player) {
+  update_gun(player->_gun, 1);
+
+  if (player->health == 0) return;
   player->_state = IDLE;
 
   if (player->_joystick->down) {
@@ -83,10 +86,10 @@ void update_player(Player *player) {
   }
 
   if (player->_state == MOVEMENT) player->current_frame++;
-  update_gun(player->_gun, 1);
 }
 
 void destroy_player(Player *player) {
+  destroy_special_attack(player->special_attack);
   destroy_gun(player->_gun);
   destroy_joystick(player->_joystick);
   free(player);

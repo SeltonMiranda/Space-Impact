@@ -12,7 +12,8 @@ Boss *create_boss(BOSS_TYPE type) {
 
   boss->type = type;
   boss->current_frame = 0;
-  boss->life = 300;
+  boss->life = BOSS_LIFE;
+  boss->spawned = 0;
   boss->timer = time(NULL);
   boss->state = BOSS_STATE_NOT_SPAWNED;
   boss->x = SCREEN_WIDTH - 150;
@@ -23,15 +24,19 @@ Boss *create_boss(BOSS_TYPE type) {
 }
 
 int boss_should_spawn(Boss *boss) {
+  if (boss->spawned) return 0;
   if (difftime(time(NULL), boss->timer) >= BOSS_TIME_SPAWN) return 1;
   return 0;
 }
 
 void spawn_boss(Boss *boss) {
   boss->state = BOSS_STATE_SPAWNED;
+  boss->spawned = 1;
 }
 
 void update_boss(Boss *boss) {
+  if (boss->state == BOSS_STATE_DEAD) return;
+
   if (boss->state == BOSS_STATE_NOT_SPAWNED) return;
 
   boss->y += (boss->direction * BOSS_SPEED);

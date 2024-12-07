@@ -30,6 +30,7 @@
 #define PLAYER_HEIGHT 128
 #define PLAYER_PADDING 15
 #define SPATTACK_TIME 5
+#define SPECIAL_ITEM_SPEED 1.0f
 // ------------- PLAYER ----------------
 
 // ------------- SHOT ----------------
@@ -43,6 +44,7 @@
 #define BOSS_HEIGHT 100
 #define BOSS_SPEED 2.5f
 #define BOSS_TIME_SPAWN 10
+#define BOSS_LIFE 100
 #define DOWN 1
 #define UP -1
 // ------------- BOSS ----------------

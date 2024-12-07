@@ -46,8 +46,9 @@ void draw_enemies(Enemy *enemies, int spawned) {
 
   for (int i = 0; i < spawned; i++) {
     if (enemies[i].isAlive) {
-      al_draw_filled_rectangle(enemies[i].x, enemies[i].y, enemies[i].x + 30,
-                               enemies[i].y + 30, color);
+      al_draw_filled_rectangle(enemies[i].x, enemies[i].y,
+                               enemies[i].x + ENEMY_WIDTH,
+                               enemies[i].y + ENEMY_HEIGHT, color);
     }
   }
 }
@@ -72,7 +73,22 @@ void draw_enemies_shots(Enemy *enemies, int spawned) {
 }
 
 void draw_boss(Boss *boss) {
-  if (boss->state == BOSS_STATE_NOT_SPAWNED) return;
+  if (boss->state == BOSS_STATE_NOT_SPAWNED || boss->state == BOSS_STATE_DEAD)
+    return;
   al_draw_filled_rectangle(boss->x, boss->y, boss->x + BOSS_WIDTH,
                            boss->y + BOSS_HEIGHT, al_map_rgb(255, 150, 250));
+}
+
+void draw_special(Special *sp) {
+  if (!sp->on_map) return;
+
+  switch (sp->type) {
+    case SPECIAL_GUN_ONE:
+      al_draw_filled_circle(sp->x, sp->y, 10, al_map_rgb(255, 131, 25));
+      break;
+
+    case SPECIAL_GUN_TWO:
+      al_draw_filled_circle(sp->x, sp->y, 10, al_map_rgb(156, 255, 133));
+      break;
+  }
 }

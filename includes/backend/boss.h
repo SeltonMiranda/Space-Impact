@@ -8,7 +8,8 @@ typedef enum BOSS_TYPE { LEVEL_ONE_BOSS = 0, LEVEL_TWO_BOSS } BOSS_TYPE;
 typedef enum BOSS_STATE {
   BOSS_STATE_NOT_SPAWNED = 0,
   BOSS_STATE_SPAWNED,
-  BOSS_STATE_ATTACKING
+  BOSS_STATE_ATTACKING,
+  BOSS_STATE_DEAD
 } BOSS_STATE;
 
 typedef struct Boss {
@@ -20,6 +21,7 @@ typedef struct Boss {
   int life;
   int current_frame;
   int direction;  // 1 para cima e -1 para baixo
+  int spawned;
 } Boss;
 
 Boss *create_boss(BOSS_TYPE type);

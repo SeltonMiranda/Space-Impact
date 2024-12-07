@@ -25,7 +25,7 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
         break;
 
       case ENEMY_2:
-        enemy_vector[i].life = 2;
+        enemy_vector[i].life = 1;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH;
         if (enemy_vector[i].y > 500) enemy_vector[i].y = 0;
         enemy_vector[i].y =
@@ -74,12 +74,9 @@ void update_enemies(Enemy *enemies, int spawned) {
 
       if (enemies[i]._gun->timer > 0) enemies[i]._gun->timer--;
 
-      if (enemies[i].x < 0) {
-        enemies[i].isAlive = DEAD;
-      }
-
-      update_gun(enemies[i]._gun, 0);
+      if (enemies[i].x < 0) enemies[i].isAlive = DEAD;
     }
+    update_gun(enemies[i]._gun, 0);
   }
 }
 
