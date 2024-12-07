@@ -3,11 +3,14 @@
 #include <allegro5/allegro_image.h>
 #include <stdlib.h>
 
+#include "../../includes/config/config.h"
+#include "../../includes/utils/utils.h"
+
 #define PLAYER_IDLE 0
 
 Resources_Manager *create_resources() {
   Resources_Manager *r = (Resources_Manager *)malloc(sizeof(Resources_Manager));
-  if (r == NULL) return NULL;
+  must_init(r, "Resources Manager");
   load_player_sprites(r);
   return r;
 }

@@ -6,15 +6,21 @@
 
 #include "../../includes/backend/collision/collision.h"
 #include "../../includes/backend/enemies.h"
+#include "../../includes/backend/game.h"
 #include "../../includes/backend/level.h"
 #include "../../includes/backend/player.h"
 #include "../../includes/backend/spawnControl.h"
 #include "../../includes/frontend/graphics.h"
-
 // Configs
 #include "../../includes/config/config.h"
 
 int main() {
+  Game game;
+  game_run(&game);
+  return 0;
+}
+
+int main2() {
   al_init();
   al_install_keyboard();
   al_init_primitives_addon();
@@ -81,7 +87,7 @@ int main() {
     if (done) break;
 
     if (redraw && al_is_event_queue_empty(queue)) {
-      render_background(background, buffer, l->background_x);
+      // render_background(background, buffer, l->background_x);
       draw_enemies(l->sp1->enemies, l->sp1->spawned);
       draw_enemies(l->sp2->enemies, l->sp2->spawned);
 

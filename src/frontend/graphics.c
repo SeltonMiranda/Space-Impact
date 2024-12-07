@@ -1,20 +1,44 @@
 #include "../../includes/frontend/graphics.h"
 
+#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
+#include <stdio.h>
 
 #include "../../includes/backend/boss.h"
 #include "../../includes/config/config.h"
 
-void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
-                       int bg_x) {
-  al_set_target_bitmap(buffer);
-
+void render_background(ALLEGRO_BITMAP *background, float bg_x) {
   al_clear_to_color(al_map_rgb(0, 0, 0));
   al_draw_bitmap(background, bg_x, 0, 0);
   al_draw_bitmap(background, bg_x + SCREEN_WIDTH, 0, 0);
+}
 
-  al_set_target_backbuffer(al_get_current_display());
-  al_draw_bitmap(buffer, 0, 0, 0);
+void render_menu() {
+  al_clear_to_color(al_map_rgb(0, 0, 0));  // Fundo preto
+
+  // Exibir o texto no centro da tela
+  ALLEGRO_FONT *font = al_create_builtin_font();
+  if (font) {
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
+                 SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
+                 "Pressione Enter para começar o jogo");
+    al_destroy_font(font);
+  }
+
+  al_flip_display();  // Atualiza a tela
+}
+
+void render_gameover() {
+  al_clear_to_color(al_map_rgb(0, 0, 0));  // Tela preta
+
+  // Exibir mensagem "Game Over"
+  ALLEGRO_FONT *font = al_create_builtin_font();
+  if (font) {
+    al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2,
+                 SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, "GAME OVER");
+  }
+
+  al_flip_display();  // Atualizar a tela
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {

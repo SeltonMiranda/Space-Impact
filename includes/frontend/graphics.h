@@ -18,8 +18,11 @@ typedef struct Background {
   ALLEGRO_BITMAP *_background;
 } Background;
 
-void render_background(ALLEGRO_BITMAP *background, ALLEGRO_BITMAP *buffer,
-                       int bg_x);
+void render_background(ALLEGRO_BITMAP *background, float bg_x);
+
+void render_menu();
+
+void render_gameover();
 
 void draw_player(Player *_player, Resources_Manager *_resources);
 
