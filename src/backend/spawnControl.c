@@ -15,16 +15,19 @@ SpawnControl *create_spawn_control(ENEMY_TYPE type, int quantity) {
 
   switch (type) {
     case ENEMY_1:
-      _SpawnControl->interval = 5;  // em segundos
+      _SpawnControl->interval = ENEMY_ONE_SPAWN_INTERVAL;
       break;
+
     case ENEMY_2:
-      _SpawnControl->interval = 3;  // em segundos
+      _SpawnControl->interval = ENEMY_TWO_SPAWN_INTERVAL;
       break;
+
     case ENEMY_3:
-      _SpawnControl->interval = 2;  // em segundos
+      _SpawnControl->interval = ENEMY_THREE_SPAWN_INTERVAL;
       break;
+
     case ENEMY_4:
-      _SpawnControl->interval = 3;  // em segundos
+      _SpawnControl->interval = ENEMY_FOUR_SPAWN_INTERVAL;
       break;
   }
 

@@ -119,7 +119,7 @@ void update_player(Player *player) {
       gun_shot(player->special_attack->gun,
                player->x + (PLAYER_WIDTH - width) / 2,
                player->y + (PLAYER_HEIGHT - height) / 2);
-      player->special_attack->gun->timer = 15;
+      player->special_attack->gun->timer = SHOT_COOLDOWN;
     }
 
     if (player->special_attack->gun->timer) {

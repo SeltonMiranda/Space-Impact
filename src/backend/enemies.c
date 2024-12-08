@@ -19,29 +19,31 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
 
     switch (type) {
       case ENEMY_1:
-        enemy_vector[i].life = 1;
+        enemy_vector[i].life = ENEMY_ONE_LIFE;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * ENEMY_PADDING;
         enemy_vector[i].y = (SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING;
         break;
 
       case ENEMY_2:
-        enemy_vector[i].life = 1;
+        enemy_vector[i].life = ENEMY_TWO_LIFE;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH;
-        if (enemy_vector[i].y > 500) enemy_vector[i].y = 0;
+        if (enemy_vector[i].y > 500)
+          enemy_vector[i].y = 0;
         enemy_vector[i].y =
             ENEMY_PADDING + (ENEMY_HEIGHT + ENEMY_PADDING) * (i % BATCH);
         break;
 
       case ENEMY_3:
-        enemy_vector[i].life = 1;
+        enemy_vector[i].life = ENEMY_THREE_LIFE;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * ENEMY_PADDING;
         enemy_vector[i].y = (SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING;
         break;
 
       case ENEMY_4:
-        enemy_vector[i].life = 2;
+        enemy_vector[i].life = ENEMY_FOUR_LIFE;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * ENEMY_PADDING;
-        if (enemy_vector[i].y > 500) enemy_vector[i].y = 0;
+        if (enemy_vector[i].y > 500)
+          enemy_vector[i].y = 0;
         enemy_vector[i].y =
             ENEMY_PADDING + (ENEMY_HEIGHT + ENEMY_PADDING) * (i % BATCH);
         break;
@@ -75,9 +77,11 @@ void update_enemies(Enemy *enemies, int spawned) {
         enemies[i]._gun->timer = rand_between(MIN_TIME, MAX_TIME);
       }
 
-      if (enemies[i]._gun->timer > 0) enemies[i]._gun->timer--;
+      if (enemies[i]._gun->timer > 0)
+        enemies[i]._gun->timer--;
 
-      if (enemies[i].x < 0) enemies[i].isAlive = DEAD;
+      if (enemies[i].x < 0)
+        enemies[i].isAlive = DEAD;
     }
     update_gun(enemies[i]._gun, 0);
   }
