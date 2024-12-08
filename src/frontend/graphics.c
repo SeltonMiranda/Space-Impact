@@ -102,11 +102,8 @@ void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r) {
       float y = _gun->shots[i].y;
       if (isPlayer)
         al_draw_bitmap(r->shots.normal_shot[frame], x, y, 0);
-      else {
+      else
         al_draw_bitmap(r->shots.enemy_shot[frame], x, y, 0);
-      }
-      // al_draw_filled_circle(_gun->shots[i].x, _gun->shots[i].y, 20,
-      //                       al_map_rgb(0, 255, 255));
     }
   }
 }
@@ -117,11 +114,63 @@ void draw_enemies_shots(Enemy *enemies, int spawned, Resources_Manager *r) {
   }
 }
 
-void draw_boss(Boss *boss) {
+void draw_boss_shot(Boss *boss, Resources_Manager *r) {
+  for (int i = 0; i < MAX_SHOTS; i++) {
+    if (boss->weapon->shots[i].is_fired) {
+      if (boss->type == LEVEL_ONE_BOSS) {
+        int frame = (boss->weapon->shots[i].current_frame / 15) % 5;
+        switch (boss->weapon->type) {
+          case WEAPON_TYPE_ONE:
+            al_draw_bitmap(r->shots.boss_one_first_shot,
+                           boss->weapon->shots[i].x, boss->weapon->shots[i].y,
+                           0);
+            break;
+
+          case WEAPON_TYPE_TWO:
+            al_draw_bitmap(r->shots.boss_one_second_shot[frame],
+                           boss->weapon->shots[i].x, boss->weapon->shots[i].y,
+                           0);
+            break;
+
+          case WEAPON_TYPE_THREE:
+          case WEAPON_TYPE_FOUR:
+            return;
+        }
+      } else {
+        int frame = (boss->weapon->shots[i].current_frame / 15) % 4;
+        switch (boss->weapon->type) {
+          case WEAPON_TYPE_THREE:
+            al_draw_bitmap(r->shots.boss_two_first_shot[frame],
+                           boss->weapon->shots[i].x, boss->weapon->shots[i].y,
+                           0);
+            break;
+          case WEAPON_TYPE_FOUR:
+            al_draw_bitmap(r->shots.boss_two_second_shot[frame],
+                           boss->weapon->shots[i].x, boss->weapon->shots[i].y,
+                           0);
+            break;
+          case WEAPON_TYPE_ONE:
+          case WEAPON_TYPE_TWO:
+            return;
+        }
+      }
+    }
+  }
+}
+
+void draw_boss(Boss *boss, Resources_Manager *r, int state) {
   if (boss->state == BOSS_STATE_NOT_SPAWNED || boss->state == BOSS_STATE_DEAD)
     return;
-  al_draw_filled_rectangle(boss->x, boss->y, boss->x + BOSS_WIDTH,
-                           boss->y + BOSS_HEIGHT, al_map_rgb(255, 150, 250));
+
+  switch (state) {
+    case 1:
+      al_draw_bitmap(r->boss.boss_one, boss->x, boss->y, 0);
+      break;
+
+    case 2:
+      al_draw_bitmap(r->boss.boss_two, boss->x, boss->y, 0);
+      break;
+  }
 }
 
 void draw_special(Special *sp) {

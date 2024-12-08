@@ -76,8 +76,8 @@
 #define BOSS_WIDTH 100
 #define BOSS_HEIGHT 100
 #define BOSS_SPEED 2.5f
-#define BOSS_TIME_SPAWN 10
-#define BOSS_LIFE 100
+#define BOSS_TIME_SPAWN 2
+#define BOSS_LIFE 20
 #define DOWN 1
 #define UP -1
 // ------------- BOSS ----------------

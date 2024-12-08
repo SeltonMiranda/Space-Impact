@@ -153,9 +153,17 @@ void check_boss_collision(Player *player, Boss *boss) {
                 boss->y + BOSS_HEIGHT)) {
       boss->life--;
       g->shots[i].is_fired = 0;
+      printf("boss life = %d\n", boss->life);
       if (boss->life == 0) boss->state = BOSS_STATE_DEAD;
     }
   }
+
+  // Weapon *w = boss->weapon;
+  // for (int i = 0 ; i < MAX_SHOTS; i++) {
+  //   if (w->shots[i].is_fired && collide()) {
+  //
+  //  }
+  //}
 }
 
 void check_all_collisions(Player *player, Level *l) {

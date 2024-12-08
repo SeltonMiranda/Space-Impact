@@ -54,7 +54,7 @@ void load_shots_sprites(Resources_Manager *r) {
   r->shots.boss_one_second_shot_spritesheet = al_load_bitmap(BOSS_ONE_SHOT_TWO);
   for (int i = 0; i < 5; i++) {
     r->shots.boss_one_second_shot[i] = al_create_sub_bitmap(
-        r->shots.boss_one_second_shot_spritesheet, i * 16, 0, 16, 16);
+        r->shots.boss_one_second_shot_spritesheet, i * 64, 0, 64, 64);
   }
 
   // Boss 2 shot sprites

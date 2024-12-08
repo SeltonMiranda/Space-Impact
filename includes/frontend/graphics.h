@@ -8,6 +8,7 @@
 #include "../backend/resourcesManager.h"
 #include "../backend/special.h"
 
+// mudar int state para gameState (criar um .h para essa estrutura)
 void render_background(Resources_Manager *r, int state);
 
 void render_menu(Resources_Manager *r, int state);
@@ -22,7 +23,9 @@ void draw_enemies_shots(Enemy *enemies, int spawned, Resources_Manager *r);
 
 void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r);
 
-void draw_boss(Boss *boss);
+void draw_boss_shot(Boss *boss, Resources_Manager *r);
+
+void draw_boss(Boss *boss, Resources_Manager *r, int state);
 
 void draw_special(Special *sp);
 

@@ -62,8 +62,10 @@ static void render_game(Game *game) {
     draw_enemies_shots(game->level->sp2->enemies, game->level->sp2->spawned,
                        game->rm);
 
+    if (game->level->boss->spawned) draw_boss_shot(game->level->boss, game->rm);
+
     draw_shots(game->player->_gun, ISPLAYER, game->rm);
-    draw_boss(game->level->boss);
+    draw_boss(game->level->boss, game->rm, game->state);
 
     draw_special(game->player->special_attack);
     draw_player(game->player, game->rm);
