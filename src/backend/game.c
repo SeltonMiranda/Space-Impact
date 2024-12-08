@@ -78,6 +78,7 @@ static void reset_level_one(Game *game) {
   game->level = loadLevel(LEVEL_PHASE_ONE);
   game->player = create_player();
   game->rm->background.x = 0;
+  al_flush_event_queue(game->queue);
 }
 
 static void update_background(Game *game) {
@@ -100,13 +101,14 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
 
         game->player = create_player();
         game->level = loadLevel(LEVEL_PHASE_ONE);
+        al_flush_event_queue(game->queue);
       }
       break;
 
     case GAME_STATE_LEVEL_ONE:
     case GAME_STATE_LEVEL_TWO:
       update_joystick(game->player->_joystick, ev);
-      break;
+      return;
 
     case GAME_STATE_VICTORY:
       if (ev->keyboard.keycode == ALLEGRO_KEY_R) game->state = GAME_STATE_MENU;
@@ -120,17 +122,17 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
 
 void check_game_victory(Game *game) {
   if (game->level->boss->state == BOSS_STATE_DEAD) {
+    destroy_player(game->player);
+    destroy_level(game->level);
+
     if (game->state == GAME_STATE_LEVEL_ONE) {
       game->state = GAME_STATE_LEVEL_TWO;
-
-      destroy_level(game->level);
-      destroy_player(game->player);
-
       game->level = loadLevel(LEVEL_PHASE_TWO);
-      game->player = create_player();
+      al_flush_event_queue(game->queue);
     } else if (game->state == GAME_STATE_LEVEL_TWO) {
       game->state = GAME_STATE_VICTORY;
     }
+    game->player = create_player();
   };
 }
 
@@ -158,21 +160,6 @@ void update_game_state(Game *game) {
       break;
 
     case GAME_STATE_LEVEL_ONE:
-      update_game_level(game);
-      // update_background(game);
-      // update_level(game->level);
-      // spawn_special_attack(game->player->special_attack);
-      // update_player(game->player);
-      //
-      // check_all_collisions(game->player, game->level);
-      //
-      // check_game_victory(game);
-      //
-      // if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
-      //
-      // render_game(game);
-      break;
-
     case GAME_STATE_LEVEL_TWO:
       update_game_level(game);
       break;
