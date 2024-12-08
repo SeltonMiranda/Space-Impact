@@ -23,6 +23,8 @@ void draw_enemies(Enemy *enemies, int spawned, Resources_Manager *r);
 
 void draw_enemies_shots(Enemy *enemies, int spawned, Resources_Manager *r);
 
+void draw_special_shots(Special *sp, Resources_Manager *r);
+
 void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r);
 
 void draw_boss_shot(Boss *boss, Resources_Manager *r);

@@ -7,6 +7,7 @@ typedef struct Joystick {
   unsigned char left;
   unsigned char right;
   unsigned char fire;
+  unsigned char special;
 } Joystick;
 
 Joystick* create_joystick();
@@ -22,5 +23,7 @@ void update_joystick_up(Joystick* j);
 void update_joystick_down(Joystick* j);
 
 void update_joystick_fire(Joystick* j);
+
+void update_joystick_special(Joystick* j);
 
 #endif  // __JOYSTICK__

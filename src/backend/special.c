@@ -11,35 +11,47 @@ Special *init_special() {
   special->gun = create_gun(PLAYER);
   special->is_active = 0;
   special->on_map = 0;
+  special->spawn_time = time(NULL);
   return special;
 }
 
 void spawn_special_attack(Special *sp) {
-  if (sp->on_map || difftime(time(NULL), sp->spawn_time) <= 2) return;
+  if (sp->on_map)  // se já está no mapa, não faz nada
+    return;
 
-  sp->x = SCREEN_WIDTH + 100;
-  sp->y = rand_between(30, 500);
-  sp->type = rand_between(0, 2);
-  switch (sp->type) {
-    case SPECIAL_GUN_ONE:
-      sp->damage = 2;
-      break;
-    case SPECIAL_GUN_TWO:
-      sp->damage = 5;
-      break;
+  // verifica se já passou SPECIAL_SPAWN_TIMER segundos desde o último spawn
+  if (difftime(time(NULL), sp->spawn_time) >= SPECIAL_SPAWN_TIMER) {
+    sp->on_map = 1;
+    sp->x = SCREEN_WIDTH + 100;
+    sp->y = rand_between(30, 400);
+    sp->burst_time = time(NULL);
+
+    // alterna tipo e dano
+    if (sp->type == SPECIAL_GUN_ONE) {
+      sp->type = SPECIAL_GUN_TWO;
+      sp->damage = 8;
+    } else {
+      sp->type = SPECIAL_GUN_ONE;
+      sp->damage = 4;
+    }
+
+    // atualiza o tempo do último spawn
+    sp->spawn_time = time(NULL);
   }
-
-  sp->on_map = 1;
 }
 
 void update_special_attack(Special *sp) {
-  if (!sp->on_map) return;
+  if (sp->is_active && difftime(time(NULL), sp->burst_time) >= 5) {
+    sp->is_active = 0;
+    return;
+  }
+
+  if (!sp->on_map)
+    return;
 
   sp->x -= SPECIAL_ITEM_SPEED;
-
   if (sp->x <= 0) {
-    sp->on_map = 0;
-    sp->spawn_time = time(NULL);
+    sp->on_map = 0;  // Remove o especial do mapa
     return;
   }
 }

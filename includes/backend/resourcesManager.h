@@ -46,9 +46,10 @@ typedef struct Explosion_FX {
   ALLEGRO_BITMAP *explosion[9];
 } Explosion_FX;
 
-// typedef struct Special_Sprites {
-//   ALLEGRO_BITMAP *shot_one[]
-// } Special_Sprites;
+typedef struct Special_Sprites {
+  ALLEGRO_BITMAP *shot_one[5];
+  ALLEGRO_BITMAP *shot_two[13];
+} Special_Sprites;
 
 typedef struct Resources_Manager {
   Player_Sprites player;
@@ -56,6 +57,7 @@ typedef struct Resources_Manager {
   Shot_Sprites shots;
   Enemy_Sprites enemy;
   Boss_Sprite boss;
+  Special_Sprites special;
   Explosion_FX explosion;
 } Resources_Manager;
 
@@ -71,8 +73,10 @@ void load_explosion_sprites(Resources_Manager *r);
 
 void load_enemy_sprites(Resources_Manager *r);
 
+void load_special_sprites(Resources_Manager *r);
+
 void load_all_sprites(Resources_Manager *r);
 
-void destroy_resources(Resources_Manager *_resources);
+void destroy_resources(Resources_Manager *r);
 
 #endif  // __RESOURCES_MANAGER__

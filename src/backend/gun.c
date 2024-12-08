@@ -20,31 +20,32 @@ Gun *create_gun(Gun_Source _source) {
   return _gun;
 }
 
-void gun_shot(Gun *_gun, float x, float y) {
+void gun_shot(Gun *gun, float x, float y) {
   for (int i = 0; i < MAX_SHOTS; i++) {
-    if (_gun->shots[i].is_fired == 0) {
-      _gun->shots[i].is_fired = 1;
-      _gun->shots[i].x = x;
-      _gun->shots[i].y = y;
+    if (!gun->shots[i].is_fired) {
+      gun->shots[i].is_fired = 1;
+      gun->shots[i].x = x;
+      gun->shots[i].y = y;
       break;
     }
   }
 }
 
-void update_gun(Gun *_gun, int isPlayer) {
+void update_gun(Gun *gun, int isPlayer) {
   for (int i = 0; i < MAX_SHOTS; i++) {
-    if (_gun->shots[i].is_fired == 1) {
-      if (isPlayer)
-        _gun->shots[i].x += SHOT_SPEED;
-      else
-        _gun->shots[i].x -= SHOT_SPEED;
+    if (!gun->shots[i].is_fired)
+      continue;
 
-      if (_gun->shots[i].x < 0 || _gun->shots[i].x > 1200) {
-        _gun->shots[i].is_fired = 0;
-        _gun->shots[i].current_frame = 0;
-      }
-      _gun->shots[i].current_frame++;
+    if (isPlayer)
+      gun->shots[i].x += SHOT_SPEED;
+    else
+      gun->shots[i].x -= SHOT_SPEED;
+
+    if (gun->shots[i].x < 0 || gun->shots[i].x > 1200) {
+      gun->shots[i].is_fired = 0;
+      gun->shots[i].current_frame = 0;
     }
+    gun->shots[i].current_frame++;
   }
 }
 

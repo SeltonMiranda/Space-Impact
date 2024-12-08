@@ -4,24 +4,39 @@
 
 static int collide(float ax1, float ay1, float ax2, float ay2, float bx1,
                    float by1, float bx2, float by2) {
-  if (ax1 > bx2) return 0;
-  if (ax2 < bx1) return 0;
-  if (ay1 > by2) return 0;
-  if (ay2 < by1) return 0;
+  if (ax1 > bx2)
+    return 0;
+  if (ax2 < bx1)
+    return 0;
+  if (ay1 > by2)
+    return 0;
+  if (ay2 < by1)
+    return 0;
 
   return 1;
 }
 
-static void handleSpecialCollision(Player *player) {
+static void acquireSpecial(Player *player) {
   player->special_attack->is_active = 1;
   player->special_attack->on_map = 0;
   player->special_attack->burst_time = time(NULL);
 }
 
+void check_special_item_collision(Player *player) {
+  if (player->special_attack->on_map &&
+      collide(player->x, player->y, player->x + PLAYER_WIDTH,
+              player->y + PLAYER_HEIGHT, player->special_attack->x,
+              player->special_attack->y, player->special_attack->x + 10,
+              player->special_attack->y + 10)) {
+    acquireSpecial(player);
+  }
+}
+
 static void handleShotToEnemyCollision(Shot *shot, Enemy *enemy) {
   enemy->life -= 1;
   shot->is_fired = 0;
-  if (enemy->life <= 0) enemy->isAlive = DEAD;
+  if (enemy->life <= 0)
+    enemy->isAlive = DEAD;
 }
 
 void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
@@ -52,16 +67,6 @@ void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
         }
       }
     }
-  }
-}
-
-void check_special_item_collision(Player *player) {
-  if (player->special_attack->on_map &&
-      collide(player->x, player->y, player->x + PLAYER_WIDTH,
-              player->y + PLAYER_HEIGHT, player->special_attack->x,
-              player->special_attack->y, player->special_attack->x + 10,
-              player->special_attack->y + 10)) {
-    handleSpecialCollision(player);
   }
 }
 
@@ -112,7 +117,8 @@ void check_player_enemy_collision(Player *player, Enemy *enemies1,
                 enemies1[i].x + ENEMY_WIDTH, enemies1[i].y + ENEMY_HEIGHT)) {
       damaged = 1;
       enemies1[i].life--;
-      if (enemies1[i].life == 0) enemies1[i].isAlive = DEAD;
+      if (enemies1[i].life == 0)
+        enemies1[i].isAlive = DEAD;
     }
   }
 
@@ -124,7 +130,8 @@ void check_player_enemy_collision(Player *player, Enemy *enemies1,
                   enemies2[i].x + ENEMY_WIDTH, enemies2[i].y + ENEMY_HEIGHT)) {
         damaged = 1;
         enemies2[i].life--;
-        if (enemies2[i].life == 0) enemies2[i].isAlive = DEAD;
+        if (enemies2[i].life == 0)
+          enemies2[i].isAlive = DEAD;
       }
     }
   }
@@ -155,10 +162,23 @@ void check_boss_collision(Player *player, Boss *boss) {
                 boss->y + BOSS_HEIGHT)) {
       boss->life--;
       g->shots[i].is_fired = 0;
-      if (boss->life == 0) boss->state = BOSS_STATE_DEAD;
+      if (boss->life == 0)
+        boss->state = BOSS_STATE_DEAD;
     }
   }
 
+  Gun *sg = player->special_attack->gun;
+  for (int i = 0; i < MAX_SHOTS; i++) {
+    if (g->shots[i].is_fired &&
+        collide(sg->shots[i].x, sg->shots[i].y, sg->shots[i].x + 40,
+                sg->shots[i].y + 40, boss->x, boss->y, boss->x + BOSS_WIDTH,
+                boss->y + BOSS_HEIGHT)) {
+      boss->life -= player->special_attack->damage;
+      sg->shots[i].is_fired = 0;
+      if (boss->life == 0)
+        boss->state = BOSS_STATE_DEAD;
+    }
+  }
   // Colisao entre disparos do boss no jogador
   Weapon *w = boss->weapon;
   for (int i = 0; i < MAX_SHOTS; i++) {

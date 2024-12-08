@@ -70,9 +70,11 @@ void render_gameover(Resources_Manager *r, GAME_STATE state) {
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {
-  if (_player->respawn_timer) return;
+  if (_player->respawn_timer)
+    return;
 
-  if (((_player->invincible_timer / 2) % 3) == 1) return;
+  if (((_player->invincible_timer / 2) % 3) == 1)
+    return;
 
   if (_player->_state == MOVEMENT) {
     int frame = (_player->current_frame / 15) % 12 + 1;
@@ -108,15 +110,49 @@ void draw_enemies(Enemy *enemies, int spawned, Resources_Manager *r) {
 
 void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r) {
   for (int i = 0; i < MAX_SHOTS; i++) {
-    if (_gun->shots[i].is_fired == 1) {
-      int frame = (_gun->shots[i].current_frame / 15) % 3;
-      float x = _gun->shots[i].x;
-      float y = _gun->shots[i].y;
-      if (isPlayer)
-        al_draw_bitmap(r->shots.normal_shot[frame], x, y, 0);
-      else
-        al_draw_bitmap(r->shots.enemy_shot[frame], x, y, 0);
+    if (!_gun->shots[i].is_fired)
+      continue;
+
+    int frame = (_gun->shots[i].current_frame / 15) % 3;
+    float x = _gun->shots[i].x;
+    float y = _gun->shots[i].y;
+    if (isPlayer)
+      al_draw_bitmap(r->shots.normal_shot[frame], x, y, 0);
+    else
+      al_draw_bitmap(r->shots.enemy_shot[frame], x, y, 0);
+  }
+}
+
+void draw_special_shots(Special *sp, Resources_Manager *r) {
+  for (int i = 0; i < MAX_SHOTS; i++) {
+    if (!sp->gun->shots[i].is_fired)
+      continue;
+
+    float x = sp->gun->shots[i].x;
+    float y = sp->gun->shots[i].y;
+    int frame;
+    if (sp->type == SPECIAL_GUN_ONE) {
+      frame = (sp->gun->shots[i].current_frame / 15) % 5;
+      al_draw_bitmap(r->special.shot_one[frame], x, y, 0);
+    } else if (sp->type == SPECIAL_GUN_TWO) {
+      frame = (sp->gun->shots[i].current_frame / 5) % 13;
+      al_draw_bitmap(r->special.shot_two[frame], x, y, 0);
     }
+  }
+}
+
+void draw_special(Special *sp) {
+  if (!sp->on_map)
+    return;
+
+  switch (sp->type) {
+    case SPECIAL_GUN_ONE:
+      al_draw_filled_circle(sp->x, sp->y, 20, al_map_rgb(255, 0, 0));
+      break;
+
+    case SPECIAL_GUN_TWO:
+      al_draw_filled_circle(sp->x, sp->y, 20, al_map_rgb(0, 0, 255));
+      break;
   }
 }
 
@@ -178,18 +214,4 @@ void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state) {
     al_draw_bitmap(r->boss.boss_one, boss->x, boss->y, 0);
   else if (state == GAME_STATE_LEVEL_TWO)
     al_draw_bitmap(r->boss.boss_two, boss->x, boss->y, 0);
-}
-
-void draw_special(Special *sp) {
-  if (!sp->on_map) return;
-
-  switch (sp->type) {
-    case SPECIAL_GUN_ONE:
-      al_draw_filled_circle(sp->x, sp->y, 10, al_map_rgb(255, 131, 25));
-      break;
-
-    case SPECIAL_GUN_TWO:
-      al_draw_filled_circle(sp->x, sp->y, 10, al_map_rgb(156, 255, 133));
-      break;
-  }
 }

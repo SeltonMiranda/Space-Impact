@@ -12,6 +12,7 @@ Joystick* create_joystick() {
   j->right = 0;
   j->left = 0;
   j->fire = 0;
+  j->special = 0;
 
   return j;
 }
@@ -38,4 +39,8 @@ void update_joystick_down(Joystick* j) {
 
 void update_joystick_fire(Joystick* j) {
   j->fire = j->fire ^ 1;
+}
+
+void update_joystick_special(Joystick* j) {
+  j->special = j->special ^ 1;
 }

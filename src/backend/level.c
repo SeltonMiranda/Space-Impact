@@ -31,11 +31,12 @@ void update_level(Level *l) {
   update_enemies(l->sp1->enemies, l->sp1->spawned);
   update_enemies(l->sp2->enemies, l->sp2->spawned);
   update_boss(l->boss);
-  if (boss_should_spawn(l->boss)) spawn_boss(l->boss);
+  // if (boss_should_spawn(l->boss)) spawn_boss(l->boss);
 }
 
 void destroy_level(Level *l) {
-  if (!l) return;
+  if (!l)
+    return;
   destroy_boss(l->boss);
   destroy_spawn_control(l->sp1);
   destroy_spawn_control(l->sp2);

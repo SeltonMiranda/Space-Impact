@@ -66,7 +66,7 @@
 #define SHOT_HEIGHT 64
 #define SHOT_COOLDOWN 10
 #define MAX_SHOTS 256
-#define SHOT_SPEED 3
+#define SHOT_SPEED 6
 // ------------- SHOT ----------------
 
 // ------------- BOSS ----------------
@@ -81,5 +81,31 @@
 #define DOWN 1
 #define UP -1
 // ------------- BOSS ----------------
+
+// ------------- SPECIAL ----------------
+
+#define SPECIAL_ONE_SPRITE_1 "assets/player/special_one/FB001.png"
+#define SPECIAL_ONE_SPRITE_2 "assets/player/special_one/FB002.png"
+#define SPECIAL_ONE_SPRITE_3 "assets/player/special_one/FB003.png"
+#define SPECIAL_ONE_SPRITE_4 "assets/player/special_one/FB004.png"
+#define SPECIAL_ONE_SPRITE_5 "assets/player/special_one/FB005.png"
+
+#define SPECIAL_TWO_SPRITE_1 "assets/player/special_two/lightning_v2_1.png"
+#define SPECIAL_TWO_SPRITE_2 "assets/player/special_two/lightning_v2_2.png"
+#define SPECIAL_TWO_SPRITE_3 "assets/player/special_two/lightning_v2_3.png"
+#define SPECIAL_TWO_SPRITE_4 "assets/player/special_two/lightning_v2_4.png"
+#define SPECIAL_TWO_SPRITE_5 "assets/player/special_two/lightning_v2_5.png"
+#define SPECIAL_TWO_SPRITE_6 "assets/player/special_two/lightning_v2_6.png"
+#define SPECIAL_TWO_SPRITE_7 "assets/player/special_two/lightning_v2_7.png"
+#define SPECIAL_TWO_SPRITE_8 "assets/player/special_two/lightning_v2_8.png"
+#define SPECIAL_TWO_SPRITE_9 "assets/player/special_two/lightning_v2_9.png"
+#define SPECIAL_TWO_SPRITE_10 "assets/player/special_two/lightning_v2_10.png"
+#define SPECIAL_TWO_SPRITE_11 "assets/player/special_two/lightning_v2_11.png"
+#define SPECIAL_TWO_SPRITE_12 "assets/player/special_two/lightning_v2_12.png"
+#define SPECIAL_TWO_SPRITE_13 "assets/player/special_two/lightning_v2_13.png"
+
+#define SPECIAL_SPAWN_TIMER 15
+
+// ------------- SPECIAL ----------------
 
 #endif  // __CONFIGURATION__

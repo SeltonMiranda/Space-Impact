@@ -88,6 +88,28 @@ void load_explosion_sprites(Resources_Manager *r) {
   }
 }
 
+void load_special_sprites(Resources_Manager *r) {
+  r->special.shot_one[0] = al_load_bitmap(SPECIAL_ONE_SPRITE_1);
+  r->special.shot_one[1] = al_load_bitmap(SPECIAL_ONE_SPRITE_2);
+  r->special.shot_one[2] = al_load_bitmap(SPECIAL_ONE_SPRITE_3);
+  r->special.shot_one[3] = al_load_bitmap(SPECIAL_ONE_SPRITE_4);
+  r->special.shot_one[4] = al_load_bitmap(SPECIAL_ONE_SPRITE_5);
+
+  r->special.shot_two[0] = al_load_bitmap(SPECIAL_TWO_SPRITE_1);
+  r->special.shot_two[1] = al_load_bitmap(SPECIAL_TWO_SPRITE_2);
+  r->special.shot_two[2] = al_load_bitmap(SPECIAL_TWO_SPRITE_3);
+  r->special.shot_two[3] = al_load_bitmap(SPECIAL_TWO_SPRITE_4);
+  r->special.shot_two[4] = al_load_bitmap(SPECIAL_TWO_SPRITE_5);
+  r->special.shot_two[5] = al_load_bitmap(SPECIAL_TWO_SPRITE_6);
+  r->special.shot_two[6] = al_load_bitmap(SPECIAL_TWO_SPRITE_7);
+  r->special.shot_two[7] = al_load_bitmap(SPECIAL_TWO_SPRITE_8);
+  r->special.shot_two[8] = al_load_bitmap(SPECIAL_TWO_SPRITE_9);
+  r->special.shot_two[9] = al_load_bitmap(SPECIAL_TWO_SPRITE_10);
+  r->special.shot_two[10] = al_load_bitmap(SPECIAL_TWO_SPRITE_11);
+  r->special.shot_two[11] = al_load_bitmap(SPECIAL_TWO_SPRITE_12);
+  r->special.shot_two[12] = al_load_bitmap(SPECIAL_TWO_SPRITE_13);
+}
+
 void load_all_sprites(Resources_Manager *r) {
   load_background(r);
   load_shots_sprites(r);
@@ -95,36 +117,61 @@ void load_all_sprites(Resources_Manager *r) {
   load_boss_sprites(r);
   load_explosion_sprites(r);
   load_enemy_sprites(r);
+  load_special_sprites(r);
 }
 
-// destruir os restantes que eu to cansado agora
-void destroy_resources(Resources_Manager *_resources) {
-  if (!_resources) return;
-  al_destroy_bitmap(_resources->enemy.enemy_one);
-  al_destroy_bitmap(_resources->enemy.enemy_two);
-  al_destroy_bitmap(_resources->enemy.enemy_three);
-  al_destroy_bitmap(_resources->enemy.enemy_four);
-  al_destroy_bitmap(_resources->boss.boss_one);
-  al_destroy_bitmap(_resources->boss.boss_two);
-  al_destroy_bitmap(_resources->shots.boss_one_first_shot);
-  al_destroy_bitmap(_resources->shots.boss_one_second_shot_spritesheet);
-  al_destroy_bitmap(_resources->shots.boss_two_first_shot[0]);
-  al_destroy_bitmap(_resources->shots.boss_two_first_shot[1]);
-  al_destroy_bitmap(_resources->shots.boss_two_first_shot[2]);
-  al_destroy_bitmap(_resources->shots.boss_two_first_shot[3]);
+void destroy_resources(Resources_Manager *r) {
+  if (!r)
+    return;
 
-  al_destroy_bitmap(_resources->shots.boss_two_second_shot[0]);
-  al_destroy_bitmap(_resources->shots.boss_two_second_shot[1]);
-  al_destroy_bitmap(_resources->shots.boss_two_second_shot[2]);
-  al_destroy_bitmap(_resources->shots.boss_two_second_shot[3]);
+  al_destroy_bitmap(r->special.shot_one[0]);
+  al_destroy_bitmap(r->special.shot_one[1]);
+  al_destroy_bitmap(r->special.shot_one[2]);
+  al_destroy_bitmap(r->special.shot_one[3]);
+  al_destroy_bitmap(r->special.shot_one[4]);
 
-  al_destroy_bitmap(_resources->explosion.explosion_spritesheet);
-  al_destroy_bitmap(_resources->background.bg_common);
-  al_destroy_bitmap(_resources->background.bg_one);
-  al_destroy_bitmap(_resources->background.bg_two);
-  al_destroy_bitmap(_resources->player.sprites[0]);
-  al_destroy_bitmap(_resources->player.engine);
-  al_destroy_bitmap(_resources->shots.normal_spritesheet);
-  al_destroy_bitmap(_resources->shots.enemy_shot_spritesheet);
-  free(_resources);
+  al_destroy_bitmap(r->special.shot_two[0]);
+  al_destroy_bitmap(r->special.shot_two[1]);
+  al_destroy_bitmap(r->special.shot_two[2]);
+  al_destroy_bitmap(r->special.shot_two[3]);
+  al_destroy_bitmap(r->special.shot_two[4]);
+  al_destroy_bitmap(r->special.shot_two[5]);
+  al_destroy_bitmap(r->special.shot_two[6]);
+  al_destroy_bitmap(r->special.shot_two[7]);
+  al_destroy_bitmap(r->special.shot_two[8]);
+  al_destroy_bitmap(r->special.shot_two[9]);
+  al_destroy_bitmap(r->special.shot_two[10]);
+  al_destroy_bitmap(r->special.shot_two[11]);
+  al_destroy_bitmap(r->special.shot_two[12]);
+
+  al_destroy_bitmap(r->enemy.enemy_one);
+  al_destroy_bitmap(r->enemy.enemy_two);
+  al_destroy_bitmap(r->enemy.enemy_three);
+  al_destroy_bitmap(r->enemy.enemy_four);
+
+  al_destroy_bitmap(r->boss.boss_one);
+  al_destroy_bitmap(r->boss.boss_two);
+
+  al_destroy_bitmap(r->shots.boss_one_first_shot);
+  al_destroy_bitmap(r->shots.boss_one_second_shot_spritesheet);
+  al_destroy_bitmap(r->shots.boss_two_first_shot[0]);
+  al_destroy_bitmap(r->shots.boss_two_first_shot[1]);
+  al_destroy_bitmap(r->shots.boss_two_first_shot[2]);
+  al_destroy_bitmap(r->shots.boss_two_first_shot[3]);
+  al_destroy_bitmap(r->shots.boss_two_second_shot[0]);
+  al_destroy_bitmap(r->shots.boss_two_second_shot[1]);
+  al_destroy_bitmap(r->shots.boss_two_second_shot[2]);
+  al_destroy_bitmap(r->shots.boss_two_second_shot[3]);
+
+  al_destroy_bitmap(r->explosion.explosion_spritesheet);
+  al_destroy_bitmap(r->background.bg_common);
+  al_destroy_bitmap(r->background.bg_one);
+  al_destroy_bitmap(r->background.bg_two);
+
+  al_destroy_bitmap(r->player.sprites[0]);
+  al_destroy_bitmap(r->player.engine);
+
+  al_destroy_bitmap(r->shots.normal_spritesheet);
+  al_destroy_bitmap(r->shots.enemy_shot_spritesheet);
+  free(r);
 }

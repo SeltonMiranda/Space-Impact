@@ -46,31 +46,6 @@ void deinit_game(Game *game) {
   al_destroy_event_queue(game->queue);
 }
 
-static void render_game(Game *game) {
-  if (al_is_event_queue_empty(game->queue)) {
-    render_background(game->rm, game->state);
-
-    draw_enemies(game->level->sp1->enemies, game->level->sp1->spawned,
-                 game->rm);
-    draw_enemies(game->level->sp2->enemies, game->level->sp2->spawned,
-                 game->rm);
-
-    draw_enemies_shots(game->level->sp1->enemies, game->level->sp1->spawned,
-                       game->rm);
-    draw_enemies_shots(game->level->sp2->enemies, game->level->sp2->spawned,
-                       game->rm);
-
-    if (game->level->boss->spawned) draw_boss_shot(game->level->boss, game->rm);
-
-    draw_shots(game->player->_gun, ISPLAYER, game->rm);
-    draw_boss(game->level->boss, game->rm, game->state);
-
-    draw_special(game->player->special_attack);
-    draw_player(game->player, game->rm);
-    al_flip_display();
-  }
-}
-
 static void reset_level_one(Game *game) {
   game->state = GAME_STATE_LEVEL_ONE;
   destroy_level(game->level);
@@ -83,7 +58,8 @@ static void reset_level_one(Game *game) {
 
 static void update_background(Game *game) {
   game->rm->background.x -= BACKGROUND_SPEED;
-  if (game->rm->background.x <= -SCREEN_WIDTH) game->rm->background.x = 0;
+  if (game->rm->background.x <= -SCREEN_WIDTH)
+    game->rm->background.x = 0;
 }
 
 void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
@@ -97,7 +73,8 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
       if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) {
         game->state = GAME_STATE_LEVEL_ONE;
 
-        if (game->player != NULL) destroy_player(game->player);
+        if (game->player != NULL)
+          destroy_player(game->player);
 
         game->player = create_player();
         game->level = loadLevel(LEVEL_PHASE_ONE);
@@ -111,11 +88,13 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
       return;
 
     case GAME_STATE_VICTORY:
-      if (ev->keyboard.keycode == ALLEGRO_KEY_R) game->state = GAME_STATE_MENU;
+      if (ev->keyboard.keycode == ALLEGRO_KEY_R)
+        game->state = GAME_STATE_MENU;
       break;
 
     case GAME_STATE_GAME_OVER:
-      if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) reset_level_one(game);
+      if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER)
+        reset_level_one(game);
       break;
   }
 }
@@ -128,23 +107,56 @@ void check_game_victory(Game *game) {
     if (game->state == GAME_STATE_LEVEL_ONE) {
       game->state = GAME_STATE_LEVEL_TWO;
       game->level = loadLevel(LEVEL_PHASE_TWO);
-      al_flush_event_queue(game->queue);
     } else if (game->state == GAME_STATE_LEVEL_TWO) {
       game->state = GAME_STATE_VICTORY;
     }
+
     game->player = create_player();
+    al_flush_event_queue(game->queue);
   };
+}
+
+static void render_game(Game *game) {
+  if (al_is_event_queue_empty(game->queue)) {
+    render_background(game->rm, game->state);
+
+    draw_enemies(game->level->sp1->enemies, game->level->sp1->spawned,
+                 game->rm);
+    draw_enemies(game->level->sp2->enemies, game->level->sp2->spawned,
+                 game->rm);
+    draw_enemies_shots(game->level->sp1->enemies, game->level->sp1->spawned,
+                       game->rm);
+    draw_enemies_shots(game->level->sp2->enemies, game->level->sp2->spawned,
+                       game->rm);
+
+    if (game->level->boss->spawned)
+      draw_boss_shot(game->level->boss, game->rm);
+
+    draw_shots(game->player->_gun, ISPLAYER, game->rm);
+    draw_boss(game->level->boss, game->rm, game->state);
+
+    if (game->player->special_attack->on_map)
+      draw_special(game->player->special_attack);
+
+    draw_special_shots(game->player->special_attack, game->rm);
+
+    draw_player(game->player, game->rm);
+    al_flip_display();
+  }
 }
 
 void update_game_level(Game *game) {
   update_background(game);
   update_level(game->level);
   spawn_special_attack(game->player->special_attack);
+
+  update_special_attack(game->player->special_attack);
   update_player(game->player);
   check_all_collisions(game->player, game->level);
   check_game_victory(game);
 
-  if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
+  if (game->player->health <= 0)
+    game->state = GAME_STATE_GAME_OVER;
 
   render_game(game);
 }
@@ -193,6 +205,7 @@ void game_loop(Game *game) {
 }
 
 void game_run(Game *game) {
+  srand(time(NULL));
   init_allegro();
   init_game(game);
   game_loop(game);
