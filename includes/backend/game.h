@@ -4,6 +4,7 @@
 #include <allegro5/allegro5.h>
 
 #include "../frontend/graphics.h"
+#include "explosion.h"
 #include "gameState.h"
 #include "level.h"
 #include "player.h"
@@ -11,10 +12,10 @@
 
 typedef struct Game {
   GAME_STATE state;
+  Explosion explosion[MAX_EXPLOSIONS];
   Level *level;
   Player *player;
   Resources_Manager *rm;
-  int score;
   int is_running;
 
   ALLEGRO_BITMAP *background;

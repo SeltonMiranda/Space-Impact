@@ -84,7 +84,8 @@ void load_explosion_sprites(Resources_Manager *r) {
   r->explosion.explosion_spritesheet = al_load_bitmap(EXPLOSION_SPRITE);
   for (int i = 0; i < 9; i++) {
     r->explosion.explosion[i] = al_create_sub_bitmap(
-        r->explosion.explosion_spritesheet, i * 40, 0, 40, 40);
+        r->explosion.explosion_spritesheet, i * EXPLOSION_WIDTH, 0,
+        EXPLOSION_WIDTH, EXPLOSION_WIDTH);
   }
 }
 

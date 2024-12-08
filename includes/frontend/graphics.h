@@ -3,6 +3,7 @@
 
 #include "../backend/boss.h"
 #include "../backend/enemies.h"
+#include "../backend/explosion.h"
 #include "../backend/gameState.h"
 #include "../backend/gun.h"
 #include "../backend/player.h"
@@ -34,5 +35,7 @@ void draw_boss_shot(Boss *boss, Resources_Manager *r);
 void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state);
 
 void draw_special_item(Special *sp, Resources_Manager *r);
+
+void draw_explosions(Explosion *explosions, Resources_Manager *r);
 
 #endif  // __GRAPHICS__

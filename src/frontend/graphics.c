@@ -233,3 +233,17 @@ void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state) {
   else if (state == GAME_STATE_LEVEL_TWO)
     al_draw_bitmap(r->boss.boss_two, boss->x, boss->y, 0);
 }
+
+void draw_explosions(Explosion *explosions, Resources_Manager *r) {
+  for (int i = 0; i < MAX_EXPLOSIONS; i++) {
+    if (!explosions[i].is_active)
+      continue;
+
+    explosions[i].frame++;
+    if (explosions[i].frame >= 9)
+      explosions[i].frame = 0;
+
+    al_draw_bitmap(r->explosion.explosion[explosions[i].frame], explosions[i].x,
+                   explosions[i].y, 0);
+  }
+}

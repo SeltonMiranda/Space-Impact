@@ -146,6 +146,7 @@ static void render_game(Game *game) {
     draw_special_shots(game->player->special_attack, game->rm);
 
     draw_player(game->player, game->rm);
+    draw_explosions(game->level->explosion, game->rm);
     al_flip_display();
   }
 }

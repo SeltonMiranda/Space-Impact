@@ -49,37 +49,39 @@ static void handleShotToEnemyCollision(Shot *shot, Enemy *enemy) {
     enemy->isAlive = DEAD;
 }
 
-static void check(Gun *gun, Enemy *enemies, int spawned) {
+static void check(Gun *gun, Enemy *enemies, int spawned, Explosion *explosion) {
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (!gun->shots[i].is_fired)
       continue;
 
-    float shot_top_x = gun->shots[i].x + SHOT_WIDTH;
-    float shot_top_y = gun->shots[i].y + SHOT_HEIGHT;
-    float shot_bottom_x = (gun->shots[i].x + SHOT_WIDTH) - SHOT_WIDTH / 2;
-    float shot_bottom_y = (gun->shots[i].y + SHOT_HEIGHT) - SHOT_WIDTH / 2;
+    float shot_top_x = gun->shots[i].x;
+    float shot_top_y = gun->shots[i].y;
+    float shot_bottom_x = (gun->shots[i].x + SHOT_WIDTH / 2);
+    float shot_bottom_y = (gun->shots[i].y + SHOT_HEIGHT / 2);
 
     for (int j = 0; j < spawned; j++) {
       if (!enemies[j].isAlive)
         continue;
 
-      float enemy_top_x = enemies[j].x + ENEMY_WIDTH / 2;
-      float enemy_top_y = enemies[j].y + ENEMY_HEIGHT / 2;
-      float enemy_bottom_x = (enemies[j].x + ENEMY_WIDTH) - ENEMY_WIDTH / 2;
-      float enemy_bottom_y = (enemies[j].y + ENEMY_HEIGHT) - ENEMY_HEIGHT / 2;
+      float enemy_top_x = enemies[j].x;
+      float enemy_top_y = enemies[j].y;
+      float enemy_bottom_x = (enemies[j].x + ENEMY_WIDTH / 2);
+      float enemy_bottom_y = (enemies[j].y + ENEMY_HEIGHT / 2);
 
       if (collide(shot_top_x, shot_top_y, shot_bottom_x, shot_bottom_y,
                   enemy_top_x, enemy_top_y, enemy_bottom_x, enemy_bottom_y)) {
         handleShotToEnemyCollision(&gun->shots[i], &enemies[j]);
+        printf("collided\n");
+        spawn_explosion(explosion, enemies[j].x, enemies[j].y);
       }
     }
   }
 }
 
 void check_player_shots(Gun *gun, Enemy *enemies1, int spawned1,
-                        Enemy *enemies2, int spawned2) {
-  check(gun, enemies1, spawned1);
-  check(gun, enemies2, spawned2);
+                        Enemy *enemies2, int spawned2, Explosion *explosion) {
+  check(gun, enemies1, spawned1, explosion);
+  check(gun, enemies2, spawned2, explosion);
 }
 
 /*********************************************************************** */
@@ -96,38 +98,41 @@ static void handleSpecialShotToEnemyCollision(Shot *shot, Enemy *enemy,
     enemy->isAlive = DEAD;
 }
 
-static void check_special(Special *sp, Enemy *enemies, int spawned) {
+static void check_special(Special *sp, Enemy *enemies, int spawned,
+                          Explosion *explosion) {
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (!sp->gun->shots[i].is_fired)
       continue;
 
-    float shot_top_x = sp->gun->shots[i].x + SHOT_WIDTH;
-    float shot_top_y = sp->gun->shots[i].y + SHOT_HEIGHT;
-    float shot_bottom_x = (sp->gun->shots[i].x + SHOT_WIDTH) - SHOT_WIDTH / 2;
-    float shot_bottom_y = (sp->gun->shots[i].y + SHOT_HEIGHT) - SHOT_WIDTH / 2;
+    float shot_top_x = sp->gun->shots[i].x;
+    float shot_top_y = sp->gun->shots[i].y;
+    float shot_bottom_x = (sp->gun->shots[i].x + SHOT_WIDTH / 2);
+    float shot_bottom_y = (sp->gun->shots[i].y + SHOT_WIDTH / 2);
 
     for (int j = 0; j < spawned; j++) {
       if (!enemies[j].isAlive)
         continue;
 
-      float enemy_top_x = enemies[j].x + ENEMY_WIDTH / 2;
-      float enemy_top_y = enemies[j].y + ENEMY_HEIGHT / 2;
-      float enemy_bottom_x = (enemies[j].x + ENEMY_WIDTH) - ENEMY_WIDTH / 2;
-      float enemy_bottom_y = (enemies[j].y + ENEMY_HEIGHT) - ENEMY_HEIGHT / 2;
+      float enemy_top_x = enemies[j].x;
+      float enemy_top_y = enemies[j].y;
+      float enemy_bottom_x = (enemies[j].x + ENEMY_WIDTH / 2);
+      float enemy_bottom_y = (enemies[j].y + ENEMY_HEIGHT / 2);
 
       if (collide(shot_top_x, shot_top_y, shot_bottom_x, shot_bottom_y,
                   enemy_top_x, enemy_top_y, enemy_bottom_x, enemy_bottom_y)) {
         handleSpecialShotToEnemyCollision(&sp->gun->shots[i], &enemies[j],
                                           sp->type);
+        spawn_explosion(explosion, enemies[j].x, enemies[j].y);
       }
     }
   }
 }
 
 void check_player_special_shots(Special *sp, Enemy *enemies1, int spawned1,
-                                Enemy *enemies2, int spawned2) {
-  check_special(sp, enemies1, spawned1);
-  check_special(sp, enemies2, spawned2);
+                                Enemy *enemies2, int spawned2,
+                                Explosion *explosion) {
+  check_special(sp, enemies1, spawned1, explosion);
+  check_special(sp, enemies2, spawned2, explosion);
 }
 
 /*********************************************************************** */
@@ -140,7 +145,8 @@ static void handleShotToPlayerCollision(Shot *shot, Player *player) {
 }
 
 static void checkPlayerCollisionWithEnemyShots(Player *player, Enemy *enemies,
-                                               int spawned) {
+                                               int spawned,
+                                               Explosion *explosion) {
   for (int i = 0; i < spawned; i++) {
     for (int j = 0; j < MAX_SHOTS; j++) {
       if (!enemies[i]._gun->shots[j].is_fired)
@@ -159,19 +165,20 @@ static void checkPlayerCollisionWithEnemyShots(Player *player, Enemy *enemies,
       if (collide(player_top_x, player_top_y, player_bottom_x, player_bottom_y,
                   shot_top_x, shot_top_y, shot_bottom_x, shot_bottom_y)) {
         handleShotToPlayerCollision(&enemies[i]._gun->shots[j], player);
+        spawn_explosion(explosion, player->x, player->y + PLAYER_WIDTH / 4);
       }
     }
   }
 }
 
 void check_enemy_shots(Enemy *enemies1, int spawned1, Enemy *enemies2,
-                       int spawned2, Player *player) {
-  checkPlayerCollisionWithEnemyShots(player, enemies1, spawned1);
-  checkPlayerCollisionWithEnemyShots(player, enemies2, spawned2);
+                       int spawned2, Player *player, Explosion *explosion) {
+  checkPlayerCollisionWithEnemyShots(player, enemies1, spawned1, explosion);
+  checkPlayerCollisionWithEnemyShots(player, enemies2, spawned2, explosion);
 }
 
 static int checkCollisionWithEnemies(Player *player, Enemy *enemies,
-                                     int spawned) {
+                                     int spawned, Explosion *explosion) {
   for (int i = 0; i < spawned; i++) {
     if (enemies[i].isAlive) {
       float player_top_x = player->x + PLAYER_WIDTH / 4;
@@ -186,6 +193,8 @@ static int checkCollisionWithEnemies(Player *player, Enemy *enemies,
 
       if (collide(player_top_x, player_top_y, player_bottom_x, player_bottom_y,
                   enemy_top_x, enemy_top_y, enemy_bottom_x, enemy_bottom_y)) {
+        spawn_explosion(explosion, player->x, player->y + PLAYER_HEIGHT / 2);
+        spawn_explosion(explosion, enemies[i].x, enemies[i].y);
         enemies[i].life--;
         if (enemies[i].life == 0)
           enemies[i].isAlive = DEAD;
@@ -198,15 +207,17 @@ static int checkCollisionWithEnemies(Player *player, Enemy *enemies,
 
 void check_player_enemy_collision(Player *player, Enemy *enemies1,
                                   int spawned_enemies1, Enemy *enemies2,
-                                  int spawned_enemies2) {
+                                  int spawned_enemies2, Explosion *explosion) {
   int damaged = 0;  // Evita múltiplas colisões
 
   // Verifica colisão com o primeiro grupo de inimigos
-  damaged = checkCollisionWithEnemies(player, enemies1, spawned_enemies1);
+  damaged =
+      checkCollisionWithEnemies(player, enemies1, spawned_enemies1, explosion);
 
   // Se nenhuma colisão foi detectada, verifica com o segundo grupo
   if (!damaged) {
-    damaged = checkCollisionWithEnemies(player, enemies2, spawned_enemies2);
+    damaged = checkCollisionWithEnemies(player, enemies2, spawned_enemies2,
+                                        explosion);
   }
 
   if (damaged) {
@@ -218,7 +229,8 @@ void check_player_enemy_collision(Player *player, Enemy *enemies1,
 
 /************************************************************** */
 
-static int checkPlayerBossCollision(Player *player, Boss *boss) {
+static int checkPlayerBossCollision(Player *player, Boss *boss,
+                                    Explosion *explosion) {
   if (!boss->spawned)
     return 0;
 
@@ -235,13 +247,16 @@ static int checkPlayerBossCollision(Player *player, Boss *boss) {
   if (collide(player_top_x, player_top_y, player_bottom_x, player_bottom_y,
               boss_top_x, boss_top_y, boss_bottom_x, boss_bottom_y)) {
     player->health = 0;
+    spawn_explosion(explosion, player->x, player->y + PLAYER_HEIGHT / 2);
+    spawn_explosion(explosion, boss->x, boss->y + BOSS_HEIGHT / 4);
     return 1;
   }
 
   return 0;
 }
 
-static void checkPlayerShotsCollisionWithBoss(Player *player, Boss *boss) {
+static void checkPlayerShotsCollisionWithBoss(Player *player, Boss *boss,
+                                              Explosion *explosion) {
   Gun *gun = player->_gun;
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (!gun->shots[i].is_fired)
@@ -259,6 +274,7 @@ static void checkPlayerShotsCollisionWithBoss(Player *player, Boss *boss) {
 
     if (collide(shot_top_x, shot_top_y, shot_bottom_x, shot_bottom_y,
                 boss_top_x, boss_top_y, boss_bottom_x, boss_bottom_y)) {
+      spawn_explosion(explosion, boss->x, boss->y + BOSS_HEIGHT / 4);
       boss->life--;
       gun->shots[i].is_fired = 0;
       if (boss->life <= 0)
@@ -267,7 +283,8 @@ static void checkPlayerShotsCollisionWithBoss(Player *player, Boss *boss) {
   }
 }
 
-static int checkBossShotsCollisionWithPlayer(Player *player, Boss *boss) {
+static int checkBossShotsCollisionWithPlayer(Player *player, Boss *boss,
+                                             Explosion *explosion) {
   Weapon *weapon = boss->weapon;
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (!weapon->shots[i].is_fired)
@@ -287,6 +304,7 @@ static int checkBossShotsCollisionWithPlayer(Player *player, Boss *boss) {
 
     if (collide(shot_top_x, shot_top_y, shot_bottom_x, shot_bottom_y,
                 player_top_x, player_top_y, player_bottom_x, player_bottom_y)) {
+      spawn_explosion(explosion, player->x, player->y + PLAYER_WIDTH / 4);
       return 1;
     }
   }
@@ -294,23 +312,23 @@ static int checkBossShotsCollisionWithPlayer(Player *player, Boss *boss) {
   return 0;
 }
 
-void check_boss_collision(Player *player, Boss *boss) {
-  if (checkPlayerBossCollision(player, boss))
+void check_boss_collision(Player *player, Boss *boss, Explosion *explosion) {
+  if (checkPlayerBossCollision(player, boss, explosion))
     return;  // O jogador morreu na colisão direta com o boss
 
-  checkPlayerShotsCollisionWithBoss(player, boss);
+  checkPlayerShotsCollisionWithBoss(player, boss, explosion);
 
-  if (checkBossShotsCollisionWithPlayer(player, boss)) {
+  if (checkBossShotsCollisionWithPlayer(player, boss, explosion)) {
     player->health -= boss->weapon->damage;
     player->respawn_timer = 90;
     player->invincible_timer = 180;
-    printf("life: %d\n", player->health);
   }
 }
 
 /*********************************************************************** */
 
-void check_player_special_shots_to_boss(Player *player, Boss *boss) {
+void check_player_special_shots_to_boss(Player *player, Boss *boss,
+                                        Explosion *explosion) {
   Gun *sg = player->special_attack->gun;
   for (int i = 0; i < MAX_SHOTS; i++) {
     if (!sg->shots[i].is_fired)
@@ -328,6 +346,7 @@ void check_player_special_shots_to_boss(Player *player, Boss *boss) {
 
     if (collide(shot_left_x, shot_top_y, shot_right_x, shot_bottom_y,
                 boss_left_x, boss_top_y, boss_right_x, boss_bottom_y)) {
+      spawn_explosion(explosion, boss->x, boss->y);
       boss->life -= player->special_attack->damage;
       sg->shots[i].is_fired = 0;
       if (boss->life <= 0)
@@ -346,14 +365,15 @@ void check_all_collisions(Player *player, Level *l) {
   else {
     // colisao direta
     check_player_enemy_collision(player, l->sp1->enemies, l->sp1->spawned,
-                                 l->sp2->enemies, l->sp2->spawned);
+                                 l->sp2->enemies, l->sp2->spawned,
+                                 l->explosion);
 
     // colisao com o boss
-    check_boss_collision(player, l->boss);
+    check_boss_collision(player, l->boss, l->explosion);
 
     // disparos dos inimigos no jogador
     check_enemy_shots(l->sp1->enemies, l->sp1->spawned, l->sp2->enemies,
-                      l->sp2->spawned, player);
+                      l->sp2->spawned, player, l->explosion);
   }
 #endif
 
@@ -361,10 +381,11 @@ void check_all_collisions(Player *player, Level *l) {
 
   // disparos do jogador no inimigo
   check_player_shots(player->_gun, l->sp1->enemies, l->sp1->spawned,
-                     l->sp2->enemies, l->sp2->spawned);
+                     l->sp2->enemies, l->sp2->spawned, l->explosion);
 
   // disparo especial
   check_player_special_shots(player->special_attack, l->sp1->enemies,
-                             l->sp1->spawned, l->sp2->enemies, l->sp2->spawned);
-  check_player_special_shots_to_boss(player, l->boss);
+                             l->sp1->spawned, l->sp2->enemies, l->sp2->spawned,
+                             l->explosion);
+  check_player_special_shots_to_boss(player, l->boss, l->explosion);
 }

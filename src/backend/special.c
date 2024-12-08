@@ -12,6 +12,7 @@ Special *init_special() {
   special->is_active = 0;
   special->on_map = 0;
   special->spawn_time = time(NULL);
+  special->type = SPECIAL_GUN_TWO;
   return special;
 }
 
@@ -30,7 +31,7 @@ void spawn_special_attack(Special *sp) {
     if (sp->type == SPECIAL_GUN_ONE) {
       sp->type = SPECIAL_GUN_TWO;
       sp->damage = 8;
-    } else {
+    } else if (sp->type == SPECIAL_GUN_TWO) {
       sp->type = SPECIAL_GUN_ONE;
       sp->damage = 4;
     }

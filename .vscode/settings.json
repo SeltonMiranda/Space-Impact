@@ -9,6 +9,12 @@
         "enemies.h": "c",
         "config.h": "c",
         "spawncontrol.h": "c",
-        "allegro_image.h": "c"
+        "allegro_image.h": "c",
+        "array": "c",
+        "compare": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     }
 }
