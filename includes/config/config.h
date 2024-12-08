@@ -104,7 +104,7 @@
 #define SPECIAL_TWO_SPRITE_12 "assets/player/special_two/lightning_v2_12.png"
 #define SPECIAL_TWO_SPRITE_13 "assets/player/special_two/lightning_v2_13.png"
 
-#define SPECIAL_SPAWN_TIMER 15
+#define SPECIAL_SPAWN_TIMER 2
 
 // ------------- SPECIAL ----------------
 

@@ -17,6 +17,8 @@ void render_menu(Resources_Manager *r, GAME_STATE state);
 
 void render_gameover(Resources_Manager *r, GAME_STATE state);
 
+void render_prephase(Resources_Manager *r, GAME_STATE state);
+
 void draw_player(Player *_player, Resources_Manager *_resources);
 
 void draw_enemies(Enemy *enemies, int spawned, Resources_Manager *r);

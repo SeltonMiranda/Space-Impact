@@ -85,7 +85,13 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
     case GAME_STATE_LEVEL_ONE:
     case GAME_STATE_LEVEL_TWO:
       update_joystick(game->player->_joystick, ev);
-      return;
+      break;
+      ;
+
+    case GAME_STATE_TRANSITION:
+      if (ev->keyboard.keycode == ALLEGRO_KEY_N)
+        game->state = GAME_STATE_LEVEL_TWO;
+      break;
 
     case GAME_STATE_VICTORY:
       if (ev->keyboard.keycode == ALLEGRO_KEY_R)
@@ -101,17 +107,16 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
 
 void check_game_victory(Game *game) {
   if (game->level->boss->state == BOSS_STATE_DEAD) {
-    destroy_player(game->player);
-    destroy_level(game->level);
-
     if (game->state == GAME_STATE_LEVEL_ONE) {
-      game->state = GAME_STATE_LEVEL_TWO;
+      destroy_player(game->player);
+      destroy_level(game->level);
+      game->state = GAME_STATE_TRANSITION;
       game->level = loadLevel(LEVEL_PHASE_TWO);
+      game->player = create_player();
     } else if (game->state == GAME_STATE_LEVEL_TWO) {
       game->state = GAME_STATE_VICTORY;
     }
 
-    game->player = create_player();
     al_flush_event_queue(game->queue);
   };
 }
@@ -161,6 +166,10 @@ void update_game_level(Game *game) {
   render_game(game);
 }
 
+void update_transition(Game *game) {
+  render_prephase(game->rm, game->state);
+}
+
 void update_game_state(Game *game) {
   switch (game->state) {
     case GAME_STATE_GAME_OVER:
@@ -174,6 +183,10 @@ void update_game_state(Game *game) {
     case GAME_STATE_LEVEL_ONE:
     case GAME_STATE_LEVEL_TWO:
       update_game_level(game);
+      break;
+
+    case GAME_STATE_TRANSITION:
+      update_transition(game);
       break;
 
     case GAME_STATE_VICTORY:

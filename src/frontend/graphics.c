@@ -13,6 +13,7 @@ void render_background(Resources_Manager *r, GAME_STATE state) {
     case GAME_STATE_MENU:
     case GAME_STATE_GAME_OVER:
     case GAME_STATE_VICTORY:
+    case GAME_STATE_TRANSITION:
       al_draw_bitmap(r->background.bg_common, 0, 0, 0);
       break;
 
@@ -40,6 +41,7 @@ void render_victory_screen(Resources_Manager *r, GAME_STATE state) {
     al_destroy_font(font);
   }
   al_flip_display();
+  // al_destroy_font(font);
 }
 
 void render_menu(Resources_Manager *r, GAME_STATE state) {
@@ -54,6 +56,7 @@ void render_menu(Resources_Manager *r, GAME_STATE state) {
   }
 
   al_flip_display();
+  // al_destroy_font(font);
 }
 
 void render_gameover(Resources_Manager *r, GAME_STATE state) {
@@ -67,6 +70,20 @@ void render_gameover(Resources_Manager *r, GAME_STATE state) {
   }
 
   al_flip_display();
+  // al_destroy_font(font);
+}
+
+void render_prephase(Resources_Manager *r, GAME_STATE state) {
+  render_background(r, state);
+  ALLEGRO_FONT *font = al_create_builtin_font();
+  char *text = "Voce venceu! Pressione N para continuar";
+  if (font) {
+    al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2,
+                 SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, text);
+  }
+
+  al_flip_display();
+  // al_destroy_font(font);
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {

@@ -8,17 +8,6 @@
 #include "level.h"
 #include "player.h"
 #include "resourcesManager.h"
-// #include <allegro5/allegro_font.h>
-// #include <allegro5/allegro_image.h>
-// #include <allegro5/allegro_primitives.h>
-
-// typedef enum GAME_STATE {
-//   GAME_STATE_MENU = 0,
-//   GAME_STATE_LEVEL_ONE,
-//   GAME_STATE_LEVEL_TWO,
-//   GAME_STATE_VICTORY,
-//   GAME_STATE_GAME_OVER
-// } GAME_STATE;
 
 typedef struct Game {
   GAME_STATE state;
@@ -46,6 +35,8 @@ void game_run(Game *game);
 void handleKeyPress(Game *game, ALLEGRO_EVENT *ev);
 
 void update_game_level(Game *game);
+
+void update_transition(Game *game);
 
 void update_game_state(Game *game);
 

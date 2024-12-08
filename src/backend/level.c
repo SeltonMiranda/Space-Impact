@@ -17,8 +17,8 @@ Level *loadLevel(LEVEL_PHASE phase) {
 
     case LEVEL_PHASE_TWO:
       l->boss = create_boss(LEVEL_TWO_BOSS);
-      l->sp1 = create_spawn_control(ENEMY_3, 20);
-      l->sp2 = create_spawn_control(ENEMY_4, 30);
+      l->sp1 = create_spawn_control(ENEMY_3, 0);
+      l->sp2 = create_spawn_control(ENEMY_4, 0);
       break;
   }
 
@@ -28,10 +28,13 @@ Level *loadLevel(LEVEL_PHASE phase) {
 void update_level(Level *l) {
   update_spawn_control(l->sp1);
   update_spawn_control(l->sp2);
+
   update_enemies(l->sp1->enemies, l->sp1->spawned);
   update_enemies(l->sp2->enemies, l->sp2->spawned);
   update_boss(l->boss);
-  // if (boss_should_spawn(l->boss)) spawn_boss(l->boss);
+
+  if (boss_should_spawn(l->boss))
+    spawn_boss(l->boss);
 }
 
 void destroy_level(Level *l) {

@@ -41,7 +41,7 @@ void spawn_special_attack(Special *sp) {
 }
 
 void update_special_attack(Special *sp) {
-  if (sp->is_active && difftime(time(NULL), sp->burst_time) >= 5) {
+  if (sp->is_active && difftime(time(NULL), sp->burst_time) >= 10) {
     sp->is_active = 0;
     return;
   }

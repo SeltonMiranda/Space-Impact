@@ -20,5 +20,8 @@ void check_player_enemy_collision(Player *player, Enemy *enemies1,
                                   int spawned_enemies1, Enemy *enemies2,
                                   int spawned_enemies2);
 
+void check_player_special_shots(Special *sp, Enemy *enemies1, int spawned1,
+                                Enemy *enemies2, int spawned2);
+
 void check_boss_collision(Player *player, Boss *boss);
 #endif  // __COLISION__

@@ -49,8 +49,10 @@ Weapon *create_weapon() {
 }
 
 int boss_should_spawn(Boss *boss) {
-  if (boss->spawned) return 0;
-  if (difftime(time(NULL), boss->timer) >= BOSS_TIME_SPAWN) return 1;
+  if (boss->spawned)
+    return 0;
+  if (difftime(time(NULL), boss->timer) >= BOSS_TIME_SPAWN)
+    return 1;
   return 0;
 }
 
@@ -103,9 +105,11 @@ void update_boss(Boss *boss) {
     }
   }
 
-  if (boss->state == BOSS_STATE_DEAD) return;
+  if (boss->state == BOSS_STATE_DEAD)
+    return;
 
-  if (boss->state == BOSS_STATE_NOT_SPAWNED) return;
+  if (boss->state == BOSS_STATE_NOT_SPAWNED)
+    return;
 
   boss->y += (boss->direction * BOSS_SPEED);
   if (boss->y <= 0) {
@@ -113,8 +117,8 @@ void update_boss(Boss *boss) {
     boss->direction = DOWN;
   }
 
-  if (boss->y >= SCREEN_HEIGHT - BOSS_HEIGHT) {
-    boss->y = SCREEN_HEIGHT - BOSS_HEIGHT;
+  if (boss->y >= SCREEN_HEIGHT - BOSS_HEIGHT - 100) {
+    boss->y = SCREEN_HEIGHT - BOSS_HEIGHT - 100;
     boss->direction = UP;
   }
 
