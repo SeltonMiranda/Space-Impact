@@ -49,6 +49,7 @@ typedef struct Explosion_FX {
 typedef struct Special_Sprites {
   ALLEGRO_BITMAP *shot_one[5];
   ALLEGRO_BITMAP *shot_two[13];
+  ALLEGRO_BITMAP *item[2];
 } Special_Sprites;
 
 typedef struct Resources_Manager {

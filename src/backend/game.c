@@ -141,7 +141,7 @@ static void render_game(Game *game) {
     draw_boss(game->level->boss, game->rm, game->state);
 
     if (game->player->special_attack->on_map)
-      draw_special(game->player->special_attack);
+      draw_special_item(game->player->special_attack, game->rm);
 
     draw_special_shots(game->player->special_attack, game->rm);
 

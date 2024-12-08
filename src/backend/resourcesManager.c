@@ -89,6 +89,9 @@ void load_explosion_sprites(Resources_Manager *r) {
 }
 
 void load_special_sprites(Resources_Manager *r) {
+  r->special.item[0] = al_load_bitmap(SPECIAL_ITEM_SPRITE_1);
+  r->special.item[1] = al_load_bitmap(SPECIAL_ITEM_SPRITE_2);
+
   r->special.shot_one[0] = al_load_bitmap(SPECIAL_ONE_SPRITE_1);
   r->special.shot_one[1] = al_load_bitmap(SPECIAL_ONE_SPRITE_2);
   r->special.shot_one[2] = al_load_bitmap(SPECIAL_ONE_SPRITE_3);
@@ -123,6 +126,9 @@ void load_all_sprites(Resources_Manager *r) {
 void destroy_resources(Resources_Manager *r) {
   if (!r)
     return;
+
+  al_destroy_bitmap(r->special.item[0]);
+  al_destroy_bitmap(r->special.item[1]);
 
   al_destroy_bitmap(r->special.shot_one[0]);
   al_destroy_bitmap(r->special.shot_one[1]);

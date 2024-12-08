@@ -98,6 +98,9 @@
 
 // ------------- SPECIAL ----------------
 
+#define SPECIAL_ITEM_SPRITE_1 "assets/player/powerup.png"
+#define SPECIAL_ITEM_SPRITE_2 "assets/player/powerup2.png"
+
 #define SPECIAL_ONE_SPRITE_1 "assets/player/special_one/FB001.png"
 #define SPECIAL_ONE_SPRITE_2 "assets/player/special_one/FB002.png"
 #define SPECIAL_ONE_SPRITE_3 "assets/player/special_one/FB003.png"
@@ -118,7 +121,7 @@
 #define SPECIAL_TWO_SPRITE_12 "assets/player/special_two/lightning_v2_12.png"
 #define SPECIAL_TWO_SPRITE_13 "assets/player/special_two/lightning_v2_13.png"
 
-#define SPECIAL_SPAWN_TIMER 1
+#define SPECIAL_SPAWN_TIMER 2
 
 #define SPECIAL_WIDTH 32
 #define SPECIAL_HEIGHT 32

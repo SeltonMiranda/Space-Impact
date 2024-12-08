@@ -33,6 +33,6 @@ void draw_boss_shot(Boss *boss, Resources_Manager *r);
 
 void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state);
 
-void draw_special(Special *sp);
+void draw_special_item(Special *sp, Resources_Manager *r);
 
 #endif  // __GRAPHICS__
