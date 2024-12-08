@@ -1,7 +1,7 @@
 #ifndef __CONFIGURATION__
 #define __CONFIGURATION__
 
-// #define MORTAL
+#define MORTAL
 
 // ------------- GENERAL ----------------
 #define BACKGROUND_LEVEL_ONE "assets/background/background_#1.jpg"
@@ -35,7 +35,7 @@
 #define ALIVE 1
 #define ENEMY_PADDING 50
 
-#define TOTAL_ENEMIES 30
+#define TOTAL_ENEMIES 0
 #define ENEMY_ONE_SPAWN_INTERVAL 10
 #define ENEMY_TWO_SPAWN_INTERVAL 20
 #define ENEMY_THREE_SPAWN_INTERVAL 10
@@ -75,6 +75,7 @@
 
 #define ENEMY_SHOT_WIDTH 72
 #define ENEMY_SHOT_HEIGHT 27
+
 #define SHOT_WIDTH 64
 #define SHOT_HEIGHT 64
 #define SHOT_COOLDOWN 15
@@ -86,10 +87,10 @@
 #define BOSS_ONE_SPRITE "assets/boss/boss_level_one/boss_level_one.png"
 #define BOSS_TWO_SPRITE "assets/boss/boss_level_two/boss_level_two.png"
 
-#define BOSS_WIDTH 100
-#define BOSS_HEIGHT 100
+#define BOSS_WIDTH 128
+#define BOSS_HEIGHT 128
 #define BOSS_SPEED 2.5f
-#define BOSS_TIME_SPAWN 150
+#define BOSS_TIME_SPAWN 2
 #define BOSS_LIFE 10
 #define DOWN 1
 #define UP -1
@@ -117,7 +118,7 @@
 #define SPECIAL_TWO_SPRITE_12 "assets/player/special_two/lightning_v2_12.png"
 #define SPECIAL_TWO_SPRITE_13 "assets/player/special_two/lightning_v2_13.png"
 
-#define SPECIAL_SPAWN_TIMER 20
+#define SPECIAL_SPAWN_TIMER 1
 
 #define SPECIAL_WIDTH 32
 #define SPECIAL_HEIGHT 32
