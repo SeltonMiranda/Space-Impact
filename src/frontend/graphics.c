@@ -7,22 +7,22 @@
 #include "../../includes/backend/boss.h"
 #include "../../includes/config/config.h"
 
-void render_background(Resources_Manager *r, int state) {
+void render_background(Resources_Manager *r, GAME_STATE state) {
   al_clear_to_color(al_map_rgb(0, 0, 0));
   switch (state) {
-    case 0:
-    case 3:
-    case 4:
+    case GAME_STATE_MENU:
+    case GAME_STATE_GAME_OVER:
+    case GAME_STATE_VICTORY:
       al_draw_bitmap(r->background.bg_common, 0, 0, 0);
       break;
 
-    case 1:
+    case GAME_STATE_LEVEL_ONE:
       al_draw_bitmap(r->background.bg_one, r->background.x, 0, 0);
       al_draw_bitmap(r->background.bg_one, r->background.x + SCREEN_WIDTH, 0,
                      0);
       break;
 
-    case 2:
+    case GAME_STATE_LEVEL_TWO:
       al_draw_bitmap(r->background.bg_two, r->background.x, 0, 0);
       al_draw_bitmap(r->background.bg_two, r->background.x + SCREEN_WIDTH, 0,
                      0);
@@ -30,11 +30,23 @@ void render_background(Resources_Manager *r, int state) {
   }
 }
 
-void render_menu(Resources_Manager *r, int state) {
+void render_victory_screen(Resources_Manager *r, GAME_STATE state) {
+  render_background(r, state);
+  ALLEGRO_FONT *font = al_create_builtin_font();
+  char *text = "Voce Venceu! Aperte R para voltar ao menu.";
+  if (font) {
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
+                 SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE, text);
+    al_destroy_font(font);
+  }
+  al_flip_display();
+}
+
+void render_menu(Resources_Manager *r, GAME_STATE state) {
   render_background(r, state);
 
   ALLEGRO_FONT *font = al_create_builtin_font();
-  char *text = "Pressione Enter para começcar o jogo ou Q para sair";
+  char *text = "Pressione Enter para começar o jogo ou Q para sair";
   if (font) {
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
                  SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE, text);
@@ -44,7 +56,7 @@ void render_menu(Resources_Manager *r, int state) {
   al_flip_display();
 }
 
-void render_gameover(Resources_Manager *r, int state) {
+void render_gameover(Resources_Manager *r, GAME_STATE state) {
   render_background(r, state);
   ALLEGRO_FONT *font = al_create_builtin_font();
   char *text =
@@ -158,19 +170,14 @@ void draw_boss_shot(Boss *boss, Resources_Manager *r) {
   }
 }
 
-void draw_boss(Boss *boss, Resources_Manager *r, int state) {
+void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state) {
   if (boss->state == BOSS_STATE_NOT_SPAWNED || boss->state == BOSS_STATE_DEAD)
     return;
 
-  switch (state) {
-    case 1:
-      al_draw_bitmap(r->boss.boss_one, boss->x, boss->y, 0);
-      break;
-
-    case 2:
-      al_draw_bitmap(r->boss.boss_two, boss->x, boss->y, 0);
-      break;
-  }
+  if (state == GAME_STATE_LEVEL_ONE)
+    al_draw_bitmap(r->boss.boss_one, boss->x, boss->y, 0);
+  else if (state == GAME_STATE_LEVEL_TWO)
+    al_draw_bitmap(r->boss.boss_two, boss->x, boss->y, 0);
 }
 
 void draw_special(Special *sp) {

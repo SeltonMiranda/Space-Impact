@@ -41,7 +41,9 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
       case ENEMY_4:
         enemy_vector[i].life = 2;
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH + i * ENEMY_PADDING;
-        enemy_vector[i].y = (SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING;
+        if (enemy_vector[i].y > 500) enemy_vector[i].y = 0;
+        enemy_vector[i].y =
+            ENEMY_PADDING + (ENEMY_HEIGHT + ENEMY_PADDING) * (i % BATCH);
         break;
     }
   }
@@ -52,6 +54,7 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
 static void update_enemy_position(Enemy *enemy) {
   enemy->x -= 1.0f;
   switch (enemy->_type) {
+    case ENEMY_3:
     case ENEMY_1:
       enemy->y = ((SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING) +
                  sin(enemy->x / 50) * 200;

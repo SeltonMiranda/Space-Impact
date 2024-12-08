@@ -3,17 +3,19 @@
 
 #include "../backend/boss.h"
 #include "../backend/enemies.h"
+#include "../backend/gameState.h"
 #include "../backend/gun.h"
 #include "../backend/player.h"
 #include "../backend/resourcesManager.h"
 #include "../backend/special.h"
 
-// mudar int state para gameState (criar um .h para essa estrutura)
-void render_background(Resources_Manager *r, int state);
+void render_background(Resources_Manager *r, GAME_STATE state);
 
-void render_menu(Resources_Manager *r, int state);
+void render_victory_screen(Resources_Manager *r, GAME_STATE state);
 
-void render_gameover(Resources_Manager *r, int state);
+void render_menu(Resources_Manager *r, GAME_STATE state);
+
+void render_gameover(Resources_Manager *r, GAME_STATE state);
 
 void draw_player(Player *_player, Resources_Manager *_resources);
 
@@ -25,7 +27,7 @@ void draw_shots(Gun *_gun, int isPlayer, Resources_Manager *r);
 
 void draw_boss_shot(Boss *boss, Resources_Manager *r);
 
-void draw_boss(Boss *boss, Resources_Manager *r, int state);
+void draw_boss(Boss *boss, Resources_Manager *r, GAME_STATE state);
 
 void draw_special(Special *sp);
 

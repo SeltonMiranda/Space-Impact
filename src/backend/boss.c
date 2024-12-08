@@ -20,8 +20,8 @@ Boss *create_boss(BOSS_TYPE type) {
   } else {
     boss->weapon->type = WEAPON_TYPE_THREE;
     boss->weapon->damage = 5;
-    boss->weapon->width = 64;
-    boss->weapon->height = 64;
+    boss->weapon->width = 63;
+    boss->weapon->height = 32;
   }
 
   boss->life = BOSS_LIFE;
@@ -90,11 +90,15 @@ void update_boss(Boss *boss) {
       case LEVEL_ONE_BOSS:
         boss->weapon->type = WEAPON_TYPE_TWO;
         boss->weapon->damage = 6;
+        boss->weapon->width = 64;
+        boss->weapon->height = 64;
         break;
 
       case LEVEL_TWO_BOSS:
         boss->weapon->type = WEAPON_TYPE_FOUR;
         boss->weapon->damage = 10;
+        boss->weapon->width = 63;
+        boss->weapon->height = 32;
         break;
     }
   }

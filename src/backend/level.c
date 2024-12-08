@@ -16,7 +16,10 @@ Level *loadLevel(LEVEL_PHASE phase) {
       break;
 
     case LEVEL_PHASE_TWO:
-      return l;
+      l->boss = create_boss(LEVEL_TWO_BOSS);
+      l->sp1 = create_spawn_control(ENEMY_3, 0);
+      l->sp2 = create_spawn_control(ENEMY_4, 0);
+      break;
   }
 
   return l;

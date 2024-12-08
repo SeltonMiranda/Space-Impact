@@ -137,6 +137,8 @@ void check_player_enemy_collision(Player *player, Enemy *enemies1,
 }
 
 void check_boss_collision(Player *player, Boss *boss) {
+  int damaged = 0;
+
   // Colisao entre jogador e Boss
   if (collide(player->x, player->y, player->x + PLAYER_WIDTH,
               player->y + PLAYER_HEIGHT, boss->x, boss->y, boss->x + BOSS_WIDTH,
@@ -153,17 +155,28 @@ void check_boss_collision(Player *player, Boss *boss) {
                 boss->y + BOSS_HEIGHT)) {
       boss->life--;
       g->shots[i].is_fired = 0;
-      printf("boss life = %d\n", boss->life);
       if (boss->life == 0) boss->state = BOSS_STATE_DEAD;
     }
   }
 
-  // Weapon *w = boss->weapon;
-  // for (int i = 0 ; i < MAX_SHOTS; i++) {
-  //   if (w->shots[i].is_fired && collide()) {
-  //
-  //  }
-  //}
+  // Colisao entre disparos do boss no jogador
+  Weapon *w = boss->weapon;
+  for (int i = 0; i < MAX_SHOTS; i++) {
+    if (w->shots[i].is_fired &&
+        collide(w->shots[i].x, w->shots[i].y, w->shots[i].x + w->width,
+                w->shots[i].y + w->height, player->x, player->y,
+                player->x + PLAYER_WIDTH, player->y + PLAYER_HEIGHT)) {
+      damaged = 1;
+      break;
+    }
+  }
+
+  if (damaged) {
+    player->health -= boss->weapon->damage;
+    player->respawn_timer = 90;
+    player->invincible_timer = 180;
+    printf("life: %d\n", player->health);
+  }
 }
 
 void check_all_collisions(Player *player, Level *l) {

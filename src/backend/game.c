@@ -31,18 +31,16 @@ void init_game(Game *game) {
   al_start_timer(game->game_timer);
   game->is_running = 1;
   game->level = NULL;
+  game->player = NULL;
   game->state = GAME_STATE_MENU;
-  game->player = create_player();
   game->rm = create_resources();
   load_all_sprites(game->rm);
-  load_player_sprites(game->rm);
 }
 
 void deinit_game(Game *game) {
   destroy_level(game->level);
   destroy_player(game->player);
   destroy_resources(game->rm);
-  al_destroy_bitmap(game->background);
   al_destroy_display(game->display);
   al_destroy_timer(game->game_timer);
   al_destroy_event_queue(game->queue);
@@ -97,24 +95,56 @@ void handleKeyPress(Game *game, ALLEGRO_EVENT *ev) {
     case GAME_STATE_MENU:
       if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) {
         game->state = GAME_STATE_LEVEL_ONE;
+
+        if (game->player != NULL) destroy_player(game->player);
+
+        game->player = create_player();
         game->level = loadLevel(LEVEL_PHASE_ONE);
       }
       break;
 
     case GAME_STATE_LEVEL_ONE:
+    case GAME_STATE_LEVEL_TWO:
       update_joystick(game->player->_joystick, ev);
       break;
 
     case GAME_STATE_VICTORY:
-    case GAME_STATE_LEVEL_TWO:
-      printf("not implemented yet\n");
-      exit(1);
+      if (ev->keyboard.keycode == ALLEGRO_KEY_R) game->state = GAME_STATE_MENU;
       break;
 
     case GAME_STATE_GAME_OVER:
       if (ev->keyboard.keycode == ALLEGRO_KEY_ENTER) reset_level_one(game);
       break;
   }
+}
+
+void check_game_victory(Game *game) {
+  if (game->level->boss->state == BOSS_STATE_DEAD) {
+    if (game->state == GAME_STATE_LEVEL_ONE) {
+      game->state = GAME_STATE_LEVEL_TWO;
+
+      destroy_level(game->level);
+      destroy_player(game->player);
+
+      game->level = loadLevel(LEVEL_PHASE_TWO);
+      game->player = create_player();
+    } else if (game->state == GAME_STATE_LEVEL_TWO) {
+      game->state = GAME_STATE_VICTORY;
+    }
+  };
+}
+
+void update_game_level(Game *game) {
+  update_background(game);
+  update_level(game->level);
+  spawn_special_attack(game->player->special_attack);
+  update_player(game->player);
+  check_all_collisions(game->player, game->level);
+  check_game_victory(game);
+
+  if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
+
+  render_game(game);
 }
 
 void update_game_state(Game *game) {
@@ -128,22 +158,27 @@ void update_game_state(Game *game) {
       break;
 
     case GAME_STATE_LEVEL_ONE:
-      update_background(game);
-      update_level(game->level);
-      spawn_special_attack(game->player->special_attack);
-      update_player(game->player);
-
-      check_all_collisions(game->player, game->level);
-
-      if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
-
-      render_game(game);
+      update_game_level(game);
+      // update_background(game);
+      // update_level(game->level);
+      // spawn_special_attack(game->player->special_attack);
+      // update_player(game->player);
+      //
+      // check_all_collisions(game->player, game->level);
+      //
+      // check_game_victory(game);
+      //
+      // if (game->player->health <= 0) game->state = GAME_STATE_GAME_OVER;
+      //
+      // render_game(game);
       break;
 
     case GAME_STATE_LEVEL_TWO:
+      update_game_level(game);
+      break;
+
     case GAME_STATE_VICTORY:
-      printf("Not implemented yet\n");
-      exit(1);
+      render_victory_screen(game->rm, game->state);
       break;
   }
 }

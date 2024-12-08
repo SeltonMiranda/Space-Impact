@@ -10,7 +10,7 @@ Player *create_player() {
   Player *_player = (Player *)malloc(sizeof(Player));
   must_init(_player, "Player");
 
-  _player->health = 3;
+  _player->health = 9;
   _player->invincible_timer = 120;
   _player->respawn_timer = 0;
   _player->x = PLAYER_PADDING;

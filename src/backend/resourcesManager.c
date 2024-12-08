@@ -11,7 +11,6 @@
 Resources_Manager *create_resources() {
   Resources_Manager *r = (Resources_Manager *)malloc(sizeof(Resources_Manager));
   must_init(r, "Resources Manager");
-  load_player_sprites(r);
   return r;
 }
 
@@ -103,6 +102,26 @@ void destroy_resources(Resources_Manager *_resources) {
   if (!_resources) return;
   al_destroy_bitmap(_resources->enemy.enemy_one);
   al_destroy_bitmap(_resources->enemy.enemy_two);
+  al_destroy_bitmap(_resources->enemy.enemy_three);
+  al_destroy_bitmap(_resources->enemy.enemy_four);
+  al_destroy_bitmap(_resources->boss.boss_one);
+  al_destroy_bitmap(_resources->boss.boss_two);
+  al_destroy_bitmap(_resources->shots.boss_one_first_shot);
+  al_destroy_bitmap(_resources->shots.boss_one_second_shot_spritesheet);
+  al_destroy_bitmap(_resources->shots.boss_two_first_shot[0]);
+  al_destroy_bitmap(_resources->shots.boss_two_first_shot[1]);
+  al_destroy_bitmap(_resources->shots.boss_two_first_shot[2]);
+  al_destroy_bitmap(_resources->shots.boss_two_first_shot[3]);
+
+  al_destroy_bitmap(_resources->shots.boss_two_second_shot[0]);
+  al_destroy_bitmap(_resources->shots.boss_two_second_shot[1]);
+  al_destroy_bitmap(_resources->shots.boss_two_second_shot[2]);
+  al_destroy_bitmap(_resources->shots.boss_two_second_shot[3]);
+
+  al_destroy_bitmap(_resources->explosion.explosion_spritesheet);
+  al_destroy_bitmap(_resources->background.bg_common);
+  al_destroy_bitmap(_resources->background.bg_one);
+  al_destroy_bitmap(_resources->background.bg_two);
   al_destroy_bitmap(_resources->player.sprites[0]);
   al_destroy_bitmap(_resources->player.engine);
   al_destroy_bitmap(_resources->shots.normal_spritesheet);
