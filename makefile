@@ -33,7 +33,7 @@ clean:
 
 entrega: clean
 	mkdir -p $(ENTREGA)
-	cp -r makefile .editorconfig .clang-format $(SRC_DIR) $(INCLUDE_DIR) assets/ $(ENTREGA)
+	cp -r makefile .editorconfig .clang-format LEIA-ME $(SRC_DIR) $(INCLUDE_DIR) assets/ $(ENTREGA)
 	zip -r $(ENTREGA).zip $(ENTREGA)
 	rm -rf $(ENTREGA)
 	@echo "Arquivo $(ENTREGA).zip criado!"

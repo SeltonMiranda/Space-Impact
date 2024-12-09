@@ -1,7 +1,7 @@
 #ifndef __CONFIGURATION__
 #define __CONFIGURATION__
 
-// #define MORTAL
+#define MORTAL
 
 // ------------- GENERAL ----------------
 #define BACKGROUND_LEVEL_ONE "assets/background/background_#1.jpg"

@@ -160,12 +160,12 @@ void draw_special_item(Special *sp, Resources_Manager *r) {
 
   switch (sp->type) {
     case SPECIAL_GUN_ONE:
-      al_draw_bitmap(r->special.item[1], sp->x, sp->y, 0);
+      al_draw_bitmap(r->special.item[0], sp->x, sp->y, 0);
 
       break;
 
     case SPECIAL_GUN_TWO:
-      al_draw_bitmap(r->special.item[0], sp->x, sp->y, 0);
+      al_draw_bitmap(r->special.item[1], sp->x, sp->y, 0);
       break;
   }
 }

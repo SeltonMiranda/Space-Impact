@@ -31,7 +31,7 @@ void spawn_special_attack(Special *sp) {
     if (sp->type == SPECIAL_GUN_ONE) {
       sp->type = SPECIAL_GUN_TWO;
       sp->damage = 8;
-    } else if (sp->type == SPECIAL_GUN_TWO) {
+    } else {
       sp->type = SPECIAL_GUN_ONE;
       sp->damage = 4;
     }

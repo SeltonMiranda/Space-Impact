@@ -124,61 +124,79 @@ void load_all_sprites(Resources_Manager *r) {
   load_special_sprites(r);
 }
 
-void destroy_resources(Resources_Manager *r) {
-  if (!r)
-    return;
+static void destroy_shots_sprites(Resources_Manager *r) {
+  for (int i = 0; i < 3; i++) {
+    al_destroy_bitmap(r->shots.normal_shot[i]);
+  }
+  al_destroy_bitmap(r->shots.normal_spritesheet);
 
+  for (int i = 0; i < 3; i++) {
+    al_destroy_bitmap(r->shots.enemy_shot[i]);
+  }
+  al_destroy_bitmap(r->shots.enemy_shot_spritesheet);
+
+  for (int i = 0; i < 5; i++) {
+    al_destroy_bitmap(r->shots.boss_one_second_shot[i]);
+  }
+  al_destroy_bitmap(r->shots.boss_one_second_shot_spritesheet);
+  al_destroy_bitmap(r->shots.boss_one_first_shot);
+
+  for (int i = 0; i < 4; i++) {
+    al_destroy_bitmap(r->shots.boss_two_first_shot[i]);
+    al_destroy_bitmap(r->shots.boss_two_second_shot[i]);
+  }
+}
+
+static void destroy_player_sprites(Resources_Manager *r) {
+  al_destroy_bitmap(r->player.sprites[PLAYER_IDLE]);
+
+  for (int i = 0; i < 12; i++) {
+    al_destroy_bitmap(r->player.sprites[i + 1]);
+  }
+  al_destroy_bitmap(r->player.engine);
+}
+
+static void destroy_explosion_sprites(Resources_Manager *r) {
+  for (int i = 0; i < 9; i++) al_destroy_bitmap(r->explosion.explosion[i]);
+  al_destroy_bitmap(r->explosion.explosion_spritesheet);
+}
+
+static void destroy_special_sprites(Resources_Manager *r) {
   al_destroy_bitmap(r->special.item[0]);
   al_destroy_bitmap(r->special.item[1]);
+  for (int i = 0; i < 5; i++) al_destroy_bitmap(r->special.shot_one[i]);
 
-  al_destroy_bitmap(r->special.shot_one[0]);
-  al_destroy_bitmap(r->special.shot_one[1]);
-  al_destroy_bitmap(r->special.shot_one[2]);
-  al_destroy_bitmap(r->special.shot_one[3]);
-  al_destroy_bitmap(r->special.shot_one[4]);
+  for (int i = 0; i < 13; i++) al_destroy_bitmap(r->special.shot_two[i]);
+}
 
-  al_destroy_bitmap(r->special.shot_two[0]);
-  al_destroy_bitmap(r->special.shot_two[1]);
-  al_destroy_bitmap(r->special.shot_two[2]);
-  al_destroy_bitmap(r->special.shot_two[3]);
-  al_destroy_bitmap(r->special.shot_two[4]);
-  al_destroy_bitmap(r->special.shot_two[5]);
-  al_destroy_bitmap(r->special.shot_two[6]);
-  al_destroy_bitmap(r->special.shot_two[7]);
-  al_destroy_bitmap(r->special.shot_two[8]);
-  al_destroy_bitmap(r->special.shot_two[9]);
-  al_destroy_bitmap(r->special.shot_two[10]);
-  al_destroy_bitmap(r->special.shot_two[11]);
-  al_destroy_bitmap(r->special.shot_two[12]);
-
+static void destroy_enemy_sprites(Resources_Manager *r) {
   al_destroy_bitmap(r->enemy.enemy_one);
   al_destroy_bitmap(r->enemy.enemy_two);
   al_destroy_bitmap(r->enemy.enemy_three);
   al_destroy_bitmap(r->enemy.enemy_four);
+}
 
+static void destroy_boss_sprites(Resources_Manager *r) {
   al_destroy_bitmap(r->boss.boss_one);
   al_destroy_bitmap(r->boss.boss_two);
+}
 
-  al_destroy_bitmap(r->shots.boss_one_first_shot);
-  al_destroy_bitmap(r->shots.boss_one_second_shot_spritesheet);
-  al_destroy_bitmap(r->shots.boss_two_first_shot[0]);
-  al_destroy_bitmap(r->shots.boss_two_first_shot[1]);
-  al_destroy_bitmap(r->shots.boss_two_first_shot[2]);
-  al_destroy_bitmap(r->shots.boss_two_first_shot[3]);
-  al_destroy_bitmap(r->shots.boss_two_second_shot[0]);
-  al_destroy_bitmap(r->shots.boss_two_second_shot[1]);
-  al_destroy_bitmap(r->shots.boss_two_second_shot[2]);
-  al_destroy_bitmap(r->shots.boss_two_second_shot[3]);
-
-  al_destroy_bitmap(r->explosion.explosion_spritesheet);
+static void destroy_background(Resources_Manager *r) {
   al_destroy_bitmap(r->background.bg_common);
   al_destroy_bitmap(r->background.bg_one);
   al_destroy_bitmap(r->background.bg_two);
+}
 
-  al_destroy_bitmap(r->player.sprites[0]);
-  al_destroy_bitmap(r->player.engine);
+void destroy_resources(Resources_Manager *r) {
+  if (!r)
+    return;
 
-  al_destroy_bitmap(r->shots.normal_spritesheet);
-  al_destroy_bitmap(r->shots.enemy_shot_spritesheet);
+  destroy_background(r);
+  destroy_special_sprites(r);
+  destroy_enemy_sprites(r);
+  destroy_boss_sprites(r);
+  destroy_explosion_sprites(r);
+  destroy_player_sprites(r);
+  destroy_shots_sprites(r);
   free(r);
 }
