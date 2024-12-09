@@ -29,8 +29,8 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
         enemy_vector[i].x = SCREEN_WIDTH + ENEMY_WIDTH;
         if (enemy_vector[i].y > 500)
           enemy_vector[i].y = 0;
-        enemy_vector[i].y =
-            ENEMY_PADDING + (ENEMY_HEIGHT + ENEMY_PADDING) * (i % BATCH);
+        enemy_vector[i].y = ENEMY_PADDING / 2 +
+                            (ENEMY_HEIGHT + ENEMY_PADDING / 2) * (i % BATCH);
         break;
 
       case ENEMY_3:
@@ -53,6 +53,9 @@ Enemy *create_enemy(ENEMY_TYPE type, int quantity) {
 
 static void update_enemy_position(Enemy *enemy) {
   enemy->x -= 1.0f;
+  if (enemy->x >= SCREEN_WIDTH)
+    return;
+
   switch (enemy->_type) {
     case ENEMY_1:
       enemy->y = ((SCREEN_HEIGHT - ENEMY_HEIGHT) / 2 - ENEMY_PADDING) +
@@ -77,8 +80,8 @@ static void update_enemy_position(Enemy *enemy) {
 
   if (enemy->y < 0)
     enemy->y = 0;
-  if (enemy->y > SCREEN_HEIGHT - ENEMY_HEIGHT - 100)
-    enemy->y = SCREEN_HEIGHT - ENEMY_HEIGHT - 100;
+  if (enemy->y > SCREEN_HEIGHT - ENEMY_HEIGHT - 150)
+    enemy->y = SCREEN_HEIGHT - ENEMY_HEIGHT - 150;
 }
 
 void update_enemies(Enemy *enemies, int spawned) {
@@ -95,7 +98,7 @@ void update_enemies(Enemy *enemies, int spawned) {
       if (enemies[i]._gun->timer > 0)
         enemies[i]._gun->timer--;
 
-      if (enemies[i].x < 0)
+      if (enemies[i].x < -ENEMY_WIDTH)
         enemies[i].isAlive = DEAD;
     }
     update_gun(enemies[i]._gun, 0);

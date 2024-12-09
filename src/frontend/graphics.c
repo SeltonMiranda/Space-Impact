@@ -41,7 +41,6 @@ void render_victory_screen(Resources_Manager *r, GAME_STATE state) {
     al_destroy_font(font);
   }
   al_flip_display();
-  // al_destroy_font(font);
 }
 
 void render_menu(Resources_Manager *r, GAME_STATE state) {
@@ -56,21 +55,19 @@ void render_menu(Resources_Manager *r, GAME_STATE state) {
   }
 
   al_flip_display();
-  // al_destroy_font(font);
 }
 
 void render_gameover(Resources_Manager *r, GAME_STATE state) {
   render_background(r, state);
   ALLEGRO_FONT *font = al_create_builtin_font();
   char *text =
-      "GAME OVER\nPressione Enter para recomeçcar o jogo ou Q para sair";
+      "GAME OVER   Pressione Enter para recomeçcar o jogo ou Q para sair";
   if (font) {
-    al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2,
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
                  SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, text);
   }
 
   al_flip_display();
-  // al_destroy_font(font);
 }
 
 void render_prephase(Resources_Manager *r, GAME_STATE state) {
@@ -78,12 +75,11 @@ void render_prephase(Resources_Manager *r, GAME_STATE state) {
   ALLEGRO_FONT *font = al_create_builtin_font();
   char *text = "Voce venceu! Pressione N para continuar";
   if (font) {
-    al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2,
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2,
                  SCREEN_HEIGHT / 2 - 20, ALLEGRO_ALIGN_CENTRE, text);
   }
 
   al_flip_display();
-  // al_destroy_font(font);
 }
 
 void draw_player(Player *_player, Resources_Manager *_resources) {

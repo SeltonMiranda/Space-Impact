@@ -26,7 +26,7 @@
 #define ENEMY_THREE_SPRITE "assets/enemies/enemy_three/enemy_three.png"
 #define ENEMY_FOUR_SPRITE "assets/enemies/enemy_four/enemy_four.png"
 
-#define ENEMY_ONE_LIFE 3
+#define ENEMY_ONE_LIFE 2
 #define ENEMY_TWO_LIFE 5
 #define ENEMY_THREE_LIFE 3
 #define ENEMY_FOUR_LIFE 7
@@ -38,11 +38,11 @@
 #define ALIVE 1
 #define ENEMY_PADDING 50
 
-#define TOTAL_ENEMIES 20
+#define TOTAL_ENEMIES 30
 #define ENEMY_ONE_SPAWN_INTERVAL 10
-#define ENEMY_TWO_SPAWN_INTERVAL 20
+#define ENEMY_TWO_SPAWN_INTERVAL 25
 #define ENEMY_THREE_SPAWN_INTERVAL 10
-#define ENEMY_FOUR_SPAWN_INTERVAL 20
+#define ENEMY_FOUR_SPAWN_INTERVAL 25
 
 #define BATCH 5
 
@@ -93,8 +93,8 @@
 #define BOSS_WIDTH 128
 #define BOSS_HEIGHT 128
 #define BOSS_SPEED 2.5f
-#define BOSS_TIME_SPAWN 2
-#define BOSS_LIFE 10
+#define BOSS_TIME_SPAWN 170
+#define BOSS_LIFE 100
 #define DOWN 1
 #define UP -1
 // ------------- BOSS ----------------
@@ -124,7 +124,7 @@
 #define SPECIAL_TWO_SPRITE_12 "assets/player/special_two/lightning_v2_12.png"
 #define SPECIAL_TWO_SPRITE_13 "assets/player/special_two/lightning_v2_13.png"
 
-#define SPECIAL_SPAWN_TIMER 2
+#define SPECIAL_SPAWN_TIMER 25
 
 #define SPECIAL_WIDTH 32
 #define SPECIAL_HEIGHT 32
