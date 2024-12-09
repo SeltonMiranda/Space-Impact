@@ -1,7 +1,7 @@
 #ifndef __CONFIGURATION__
 #define __CONFIGURATION__
 
-#define MORTAL
+// #define MORTAL
 
 // ------------- GENERAL ----------------
 #define BACKGROUND_LEVEL_ONE "assets/background/background_#1.jpg"
@@ -38,8 +38,8 @@
 #define ALIVE 1
 #define ENEMY_PADDING 50
 
-#define TOTAL_ENEMIES 0
-#define ENEMY_ONE_SPAWN_INTERVAL 2
+#define TOTAL_ENEMIES 20
+#define ENEMY_ONE_SPAWN_INTERVAL 10
 #define ENEMY_TWO_SPAWN_INTERVAL 20
 #define ENEMY_THREE_SPAWN_INTERVAL 10
 #define ENEMY_FOUR_SPAWN_INTERVAL 20
